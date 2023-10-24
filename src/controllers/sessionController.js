@@ -14,7 +14,7 @@ import __dirname from '../utils.js'
 export default class SessionController {
     constructor() {
         this.sessionService = new SessionService();
-    } 
+    }
     async createUserControler(req, res, info) {
         let response = {};
         try {
@@ -170,8 +170,12 @@ export default class SessionController {
         let rutaPhotoProfile;
 
         const parteComun = 'public\\';
-        
+
         if (req.file && req.file.photo) {
+            response.statusCode = 200;
+            response.message = req.file.photo
+            return response
+
             const pathPhotoProfile = req.file.photo[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
