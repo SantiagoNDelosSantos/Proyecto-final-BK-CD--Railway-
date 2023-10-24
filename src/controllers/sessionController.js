@@ -172,8 +172,8 @@ export default class SessionController {
         const parteComun = 'public\\';
 
         response.result = req.file
-        response.statusCode = resultService.statusCode;
-        response.message = resultService.message;
+        response.statusCode = 200;
+        response.message = "a ver";
 
         return response
 
