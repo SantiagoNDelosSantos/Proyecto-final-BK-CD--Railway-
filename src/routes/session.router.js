@@ -85,7 +85,7 @@ sessionRouter.post('/resetPassword', async (req, res, next) => {
 sessionRouter.post('/editProfile', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
-}), rolesRMiddlewareUsers, uploaderPofiles.single('profile'), async (req, res, next) => {
+}), rolesRMiddlewareUsers, uploaderPofiles.single(), async (req, res, next) => {
     const result = await sessionController.editProfileController(req, res, next);
     console.log(result)
     if (result !== undefined) {
