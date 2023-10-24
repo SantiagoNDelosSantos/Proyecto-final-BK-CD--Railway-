@@ -171,7 +171,7 @@ export default class SessionController {
 
         const parteComun = 'public\\';
 
-        if (req.file && req.file.photo) {
+        if (req.file && req.file) {
             response.statusCode = 200;
             response.message = req.file.photo
             return response
