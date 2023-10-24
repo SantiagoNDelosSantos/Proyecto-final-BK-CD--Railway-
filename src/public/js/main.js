@@ -72,8 +72,8 @@ function allProducts() {
         let imgFrontPath = product.imgFront.reference;
         let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
 
-        let imgBacktPath = product.imgBack.reference;
-        let imgBackPathAfterImgs = imgBacktPath.substring(imgBacktPath.indexOf("/imgs"));
+        let imgBackPath = product.imgBack.reference;
+        let imgBackPathAfterImgs = imgBackPath.substring(imgBackPath.indexOf("/imgs"));
 
         htmlProductos += `
           <tr>

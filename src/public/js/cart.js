@@ -99,7 +99,7 @@ async function loadProducts(resultCart) {
   resultCart.products.forEach((product) => {
     let title = product.product.title;
     let stock = product.product.stock;
-    let imgFrontPath = product.imgFront.reference;
+    let imgFrontPath = product.product.imgFront.reference;
     let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
     let price = product.product.price;
     let quantityInCart = product.quantity;
