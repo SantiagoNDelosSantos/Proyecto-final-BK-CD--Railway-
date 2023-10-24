@@ -19,7 +19,7 @@ export const initializePassportGitHub = (req, res, next) => {
     passport.use('github', new GitHubStrategy({
         clientID: envClientID,
         clientSecret: envClientSecret,
-        callbackURL: 'https://proyecto-final-bk-cd-railway-production-19ab.up.railway.app/api/sessions/githubcallback',
+        callbackURL: 'https://proyecto-final-bk-cd-railway-production.up.railway.app/api/sessions/githubcallback',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const session = profile._json.name;
