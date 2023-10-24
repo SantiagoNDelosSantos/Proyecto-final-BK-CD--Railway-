@@ -207,6 +207,7 @@ export default class SessionController {
         try {
             if (Object.keys(updateProfile).length > 0) {
                 const resultService = await this.sessionService.updateProfileSevice(req, res, uid, updateProfile);
+                console.log("Control" + resultService)
                 response.statusCode = resultService.statusCode;
                 response.message = resultService.message;
                 if (resultService.statusCode === 500) {

@@ -229,6 +229,7 @@ export default class SessionService {
                     last_connection: new Date().toLocaleDateString() + " - " + new Date().toLocaleTimeString()
                 };
                 const resultUpdt = await this.sessionDAO.updateUser(uid, lastConnection);
+                console.log("serv" + resultUpdt)
                 if (resultUpdt.status === "error") {
                     response.statusCode = 500;
                     response.message = resultUpdt.message;

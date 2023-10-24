@@ -39,6 +39,7 @@ export default class SessionDAO {
         let response = {};
         try {
             let result = await userModel.updateOne({_id: uid }, { $set: updateUser });
+            console.log("serv" + result)
             if (result.matchedCount === 0) {
                 response.status = "not found user";
             } else if (result.matchedCount === 1){

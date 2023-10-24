@@ -87,6 +87,7 @@ sessionRouter.post('/editProfile', passport.authenticate('jwt', {
     failureRedirect: '/invalidToken'
 }), rolesRMiddlewareUsers, uploaderPofiles.single('profile'), async (req, res, next) => {
     const result = await sessionController.editProfileController(req, res, next);
+    console.log(result)
     if (result !== undefined) {
         res.status(result.statusCode).send(result);
     };
@@ -96,7 +97,6 @@ sessionRouter.post('/logout', passport.authenticate('jwt', {
     failureRedirect: '/invalidToken'
 }), rolesRMiddlewarePublic, async (req, res, next) => {
     const result = await sessionController.logoutController(req, res, next);
-    return result
     if (result !== undefined) {
         res.status(result.statusCode).send(result);
     };
