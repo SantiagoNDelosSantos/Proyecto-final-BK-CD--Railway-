@@ -29,6 +29,7 @@ async function volver() {
 }
 volver()
 async function publicar() {
+  
   const model = document.querySelector('input[name="model"]').value;
   const description = document.querySelector('input[name="description"]').value;
   const code = document.querySelector('input[name="code"]').value;
@@ -37,7 +38,9 @@ async function publicar() {
   const category = document.querySelector('input[name="category"]').value;
   const imgFrontFile = document.querySelector('input[name="imgFront"]').files[0];
   const imgBackFile = document.querySelector('input[name="imgBack"]').files[0];
+
   const formData = new FormData();
+
   formData.append('title', model);
   formData.append('description', description);
   formData.append('code', code);

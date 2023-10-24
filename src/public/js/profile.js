@@ -83,7 +83,7 @@ async function editarPerfil() {
         const invalidTokenURL = response.url;
         window.location.replace(invalidTokenURL);
     };
-    const res = await response.json(); 
+    const res = await response.json();
     if (res.statusCode === 401) {
         Swal.fire({
             title: res.h1,
@@ -100,12 +100,17 @@ async function editarPerfil() {
         if (statusCodeRes === 200) {
             let h1 = document.getElementById('h1');
             h1.style = style = "display: none";
+
+            
+            let imgFrontPath = user.photo;
+                let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
+
             let htmlPerfil = ""
             htmlPerfil += `
             <div style="width: 190%; margin-left: -8.3em; border: 0.1em solid rgb(188 188 188 / 78%); padding: 1em; border-radius: 1em; margin-bottom: 1em !important;">
                 <form id="editProfileForm" style="display: flex; justify-content: center; gap: 2em; flex-direction: row; align-items: center; width: 100%;">
                     <div style="display: flex; justify-content: center; gap: 0em; flex-direction: column; align-items: center; width: 80%; border-right: 0.1em solid #95d0f7; padding-right: 1.5em">
-                    <img src=${user.photo} alt="ADD-PHOTO" border="0" style="height: 25vh; width: 25vh; object-fit: cover; object-position: center; border-radius: 1em; margin-bottom: 1em;" />
+                    <img src=${imgFrontPathAfterImgs} alt="ADD-PHOTO" border="0" style="height: 25vh; width: 25vh; object-fit: cover; object-position: center; border-radius: 1em; margin-bottom: 1em;" />
                         <div>
                             <div style="display: flex; justify-content: center; gap: 1em; flex-direction: column; align-items: center;">
                                 <input type="file" id="archivoInputProfile" name="profile" style="display: none;">
@@ -142,17 +147,26 @@ async function editarPerfil() {
             let htmlEditarP = "";
             htmlEditarP += `<button class="boton" id="btnConfirmarCambios">Confirmar cambios</button>`
             btnsEditarPerfil.innerHTML = htmlEditarP;
+
             const archivoInputProfile = document.getElementById('archivoInputProfile');
+
             const nombreArchivo = document.getElementById('nombreArchivo');
+
             archivoInputProfile.addEventListener('change', () => {
                 const archivos = archivoInputProfile.files;
                 nombreArchivo.textContent = archivos[0].name;
             })
-            const formEditProfile = document.getElementById('editProfileForm');
+
+
+
+
             const btnConfirmarCambios = document.getElementById('btnConfirmarCambios');
+
             btnConfirmarCambios.addEventListener("click", () => {
-                confirmarCambios(formEditProfile);
+                confirmarCambios();
             });
+
+
         } else if (statusCodeRes === 404) {
             Swal.fire({
                 icon: 'warning',
@@ -168,12 +182,38 @@ async function editarPerfil() {
         };
     };
 };
-async function confirmarCambios(formEditProfile) {
-    const data = new FormData(formEditProfile);
+async function confirmarCambios() {
+
+    
+    // Creamos un nuevo objeto FormData para enviar datos de edición.
+    const formEditProfileData = new FormData();
+
+    // Agregamos el nombre y correo del usuario al FormData.
+    const name = document.querySelector('input[name="name"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+
+    formEditProfileData.append('name', name);
+    formEditProfileData.append('email', email);
+
+    // Luego, agregamos la imagen solo si se ha seleccionado un archivo.
+    const profileInput = document.querySelector('input[name="profile"]');
+    if (profileInput.files.length > 0) {
+        console.log('Se ha seleccionado un archivo');
+    } else {
+        console.log('No se ha seleccionado ningún archivo');
+    }
+
+    if (profileInput.files.length > 0) {
+        const profileFile = profileInput.files[0];
+        formEditProfileData.append('profile', profileFile);
+    }
+
+    (console.log(formEditProfileData))
+
     try {
         const response = await fetch('/api/sessions/editProfile', {
             method: 'POST',
-            body: data,
+            body: formEditProfileData,
         });
         if (response.redirected) {
             let invalidTokenURL = response.url;
@@ -387,6 +427,7 @@ async function cerrarCuenta() {
 };
 const carga = document.getElementById("VistaDeCarga");
 const vista = document.getElementById("contenedorVista");
+
 function pantallaCarga() {
     setTimeout(() => {
         carga.style = "display: none";

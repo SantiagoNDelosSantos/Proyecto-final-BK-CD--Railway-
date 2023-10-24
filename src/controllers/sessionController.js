@@ -7,14 +7,10 @@ import {
     envResetPassCookieEmail
 } from "../config.js"
 
-
-import __dirname from '../utils.js'
-
-
 export default class SessionController {
     constructor() {
         this.sessionService = new SessionService();
-    }
+    } 
     async createUserControler(req, res, info) {
         let response = {};
         try {
@@ -164,27 +160,17 @@ export default class SessionController {
         return response;
     };
     async editProfileController(req, res, next) {
-        let response = {}
         const uid = req.user.userID;
         const newName = req.body.name;
         const newEmail = req.body.email;
         let rutaPhotoProfile;
-
         const parteComun = 'public\\';
-
-        response.statusCode = 200;
-        response.message = (req.file.photo + "hola" + req.file + "chau" + req.file.photo[0].path)
-        return response
-
-        if (req.file && req.file) {
-
-
-            const pathPhotoProfile = req.file.photo[0].path;
+        if (req.file && req.file.path) {
+            const pathPhotoProfile = req.file.path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
-            rutaPhotoProfile = __dirname + ruta
+            rutaPhotoProfile = `${ruta}`
         }
-
         let updateProfile = {};
         if (newName) {
             updateProfile.first_name = newName;
@@ -217,11 +203,10 @@ export default class SessionController {
         } catch (error) {
             return next(error);
         };
-      //  let response = {};
+        let response = {};
         try {
             if (Object.keys(updateProfile).length > 0) {
                 const resultService = await this.sessionService.updateProfileSevice(req, res, uid, updateProfile);
-                console.log("Control" + resultService)
                 response.statusCode = resultService.statusCode;
                 response.message = resultService.message;
                 if (resultService.statusCode === 500) {
@@ -243,7 +228,6 @@ export default class SessionController {
         };
         return response;
     };
-
     async logoutController(req, res, next) {
         let uid;
         if (req.user.role !== "admin") {
