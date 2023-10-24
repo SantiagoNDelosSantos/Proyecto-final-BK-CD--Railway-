@@ -39,7 +39,7 @@ sessionRouter.post('/completeProfile', completeProfile);
 sessionRouter.get('/current', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
-}), rolesRMiddlewarePublic, getCurrentUser);
+}), getCurrentUser);
 sessionRouter.get('/profile', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
