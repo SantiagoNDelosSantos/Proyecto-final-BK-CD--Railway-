@@ -14,7 +14,6 @@ export const envMongoURL = process.env.MONGO_URL;
 export const envPort = process.env.PORT;
 export const envClientID = process.env.CLIENT_ID;
 export const envClientSecret = process.env.CLIENT_SECRET;
-export const envCallbackURL = process.env.CALLBACK_URL;
 export const envCoderSecret = process.env.CODER_SECRET;
 export const envCoderTokenCookie = process.env.CODER_COOKIE;
 export const envCoderUserIDCookie = process.env.CODER_USER;

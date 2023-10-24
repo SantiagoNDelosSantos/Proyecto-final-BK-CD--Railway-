@@ -99,6 +99,7 @@ export const loginUser = (req, res, next) => {
     })(req, res, next);
 };
 export const authenticateWithGitHub = (req, res, next) => {
+    console.log("hola")
     passport.authenticate('github', {
         session: false
     }, async (err, user, info) => {

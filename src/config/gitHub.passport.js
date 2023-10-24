@@ -6,8 +6,7 @@ import SessionController from '../controllers/sessionController.js';
 import CartController from '../controllers/cartController.js';
 import {
     envClientID,
-    envClientSecret,
-    envCallbackURL
+    envClientSecret
 } from '../config.js';
 
 
@@ -18,7 +17,7 @@ export const initializePassportGitHub = (req, res, next) => {
     passport.use('github', new GitHubStrategy({
         clientID: envClientID,
         clientSecret: envClientSecret,
-        callbackURL: envCallbackURL,
+        callbackURL: 'https://proyecto-final-bk-cd-railway-production-19ab.up.railway.app/api/sessions/githubcallback',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const session = profile._json.name;
