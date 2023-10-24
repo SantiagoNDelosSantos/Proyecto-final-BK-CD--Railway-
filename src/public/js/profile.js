@@ -105,6 +105,9 @@ async function editarPerfil() {
             let imgFrontPath = user.photo;
                 let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
 
+                console.log(user.photo)
+                console.log(imgFrontPathAfterImgs)
+                
             let htmlPerfil = ""
             htmlPerfil += `
             <div style="width: 190%; margin-left: -8.3em; border: 0.1em solid rgb(188 188 188 / 78%); padding: 1em; border-radius: 1em; margin-bottom: 1em !important;">
