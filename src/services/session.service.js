@@ -10,7 +10,8 @@ import {
 import {
     envResetPassToken,
     envCoderTokenCookie,
-    envCoderSecret
+    envCoderSecret,
+    envUrlResetPass
 } from '../config.js'
 
 export default class SessionService {
@@ -109,7 +110,7 @@ export default class SessionService {
                         <h2 style="font-size: 24px; margin: 0;">Enlace para restablecimiento de contraseña:</h2>
                             <p style="font-size: 16px;">
                             Haga click en el siguiente enlace para restablecer su contraseña:</p>
-                            <a href="https://proyecto-final-bk-cd-railway-production.up.railway.app/resetPasswordView?token=${token}" 
+                            <a href="${envUrlResetPass}${token}" 
                             style="
                             background-color: #95d0f7;
                             color: #ffffff; 
