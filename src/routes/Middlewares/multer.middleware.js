@@ -9,7 +9,7 @@ export const prodImgStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         const folder = file.fieldname === 'frontImg' ? 'frontImgs' :
             file.fieldname === 'backImg' ? 'backImgs' : 'unknown';
-        cb(null, __dirname + '/public/imgs/products/' + folder);
+        cb(null, __dirname + 'src/public/imgs/products/' + folder);
     },
     filename: function (req, file, cb) {
         cb(null, uuidV4() + " - " + file.originalname)
@@ -17,7 +17,7 @@ export const prodImgStorage = multer.diskStorage({
 });
 export const profImgStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, __dirname + '/public/imgs/profiles');
+        cb(null, __dirname + 'src/public/imgs/profiles');
     },
     filename: function (req, file, cb) {
         cb(null, uuidV4() + '-' + file.originalname)
@@ -28,7 +28,7 @@ export const documentsStorage = multer.diskStorage({
         const folder = file.fieldname === 'identification' ? 'identification' :
             file.fieldname === 'proofOfAddress' ? 'proofOfAddress' :
             file.fieldname === 'bankStatement' ? 'bankStatement' : 'unknown';
-        cb(null, __dirname + '/public/imgs/documents/' + folder);
+        cb(null, __dirname + 'src/public/imgs/documents/' + folder);
     },
     filename: function (req, file, cb) {
         cb(null, uuidV4() + " - " + file.originalname)
