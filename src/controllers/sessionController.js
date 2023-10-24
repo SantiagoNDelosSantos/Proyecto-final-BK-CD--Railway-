@@ -164,6 +164,7 @@ export default class SessionController {
         return response;
     };
     async editProfileController(req, res, next) {
+        let response
         const uid = req.user.userID;
         const newName = req.body.name;
         const newEmail = req.body.email;
@@ -171,12 +172,12 @@ export default class SessionController {
 
         const parteComun = 'public\\';
 
- response.statusCode = 200;
-            response.message = (req.file.photo + "hola" + req.file + "chau" + req.file.photo[0].path)
-            return response
+        response.statusCode = 200;
+        response.message = (req.file.photo + "hola" + req.file + "chau" + req.file.photo[0].path)
+        return response
 
         if (req.file && req.file) {
-           
+
 
             const pathPhotoProfile = req.file.photo[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
@@ -216,7 +217,7 @@ export default class SessionController {
         } catch (error) {
             return next(error);
         };
-        let response = {};
+      //  let response = {};
         try {
             if (Object.keys(updateProfile).length > 0) {
                 const resultService = await this.sessionService.updateProfileSevice(req, res, uid, updateProfile);
