@@ -1,3 +1,5 @@
+import __dirname from "../../utils.js";
+
 const socket = io();
 const botomStore = document.getElementById("storeButtonPrem")
 async function saludoYAccesoPrem() {
@@ -70,7 +72,7 @@ function allProducts() {
           <tr>
             <td id="${product.title}">${product.title}</td>
             <td class="description">${product.description}</td>
-            <td><img src="${product.imgFront.reference}" alt="${product.title}" class="Imgs"></td>
+            <td><img src="${__dirname + product.imgFront.reference}" alt="${product.title}" class="Imgs"></td>
             <td><img src="${product.imgBack.reference}" alt="${product.title}" class="Imgs"></td>
             <td>${product.stock} Und.</td>
             <td>$${product.price}</td>

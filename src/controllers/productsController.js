@@ -12,29 +12,30 @@ export default class ProductController {
         const productData = req.body;
         let rutaFrontImg;
         let rutaBackImg;
-// Creamos algunas variables para almacenar las rutas definitiva
-
-// Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
-const parteComun = 'public\\';
-if (req.files && req.files.frontImg) {
-
-    const frontImg = req.files.frontImg[0].path;
-    console.log(frontImg)
-    const indice = frontImg.indexOf(parteComun);
-    console.log(indice)
-    const ruta = frontImg.substring(indice + parteComun.length);
-    console.log(ruta)
-    rutaFrontImg = ruta
-};
-if (req.files && req.files.backImg) {
-    const backImg = req.files.backImg[0].path;
-    const indice = backImg.indexOf(parteComun);
-    const ruta = backImg.substring(indice + parteComun.length);
-    rutaBackImg = ruta
-};
-
         
-        
+        // Creamos algunas variables para almacenar las rutas definitiva
+
+        // Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
+        const parteComun = 'public\\imgs';
+        if (req.files && req.files.frontImg) {
+
+            const frontImg = req.files.frontImg[0].path;
+            console.log(frontImg)
+            const indice = frontImg.indexOf(parteComun);
+            console.log(indice)
+            const ruta = frontImg.substring(indice + parteComun.length);
+            console.log(ruta)
+            rutaFrontImg = ruta
+        };
+        if (req.files && req.files.backImg) {
+            const backImg = req.files.backImg[0].path;
+            const indice = backImg.indexOf(parteComun);
+            const ruta = backImg.substring(indice + parteComun.length);
+            rutaBackImg = ruta
+        };
+
+
+
         const price = parseFloat(productData.price);
         const stock = parseFloat(productData.stock);
         try {
@@ -197,7 +198,7 @@ if (req.files && req.files.backImg) {
                 } else if (resultService.statusCode === 404 || resultService.statusCode === 403) {
                     req.logger.warn(response.message);
                 } else if (resultService.statusCode === 200) {
-                    response.result = resultService.result; 
+                    response.result = resultService.result;
                     const products = await this.productService.getAllProductsService();
                     req.socketServer.sockets.emit('products', products);
                     req.logger.debug(response.message);
