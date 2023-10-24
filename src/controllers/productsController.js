@@ -20,13 +20,9 @@ export default class ProductController {
         // Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
         const parteComun = 'public\\';
         if (req.files && req.files.frontImg) {
-
             const frontImg = req.files.frontImg[0].path;
-            console.log(frontImg)
             const indice = frontImg.indexOf(parteComun);
-            console.log(indice)
             const ruta = frontImg.substring(indice + parteComun.length);
-            console.log(ruta)
             rutaFrontImg = __dirname + ruta
         };
         if (req.files && req.files.backImg) {
