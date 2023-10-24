@@ -26,6 +26,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 import cors from 'cors'
 const app = express();
+import path from 'path';
+
 const connection = mongoose.connect(envMongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -35,7 +37,9 @@ app.use(express.json());
 app.use(urlencoded({
     extended: true
 }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
