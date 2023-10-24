@@ -164,7 +164,7 @@ export default class SessionController {
         return response;
     };
     async editProfileController(req, res, next) {
-        let response
+        let response = []
         const uid = req.user.userID;
         const newName = req.body.name;
         const newEmail = req.body.email;
