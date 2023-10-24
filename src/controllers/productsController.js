@@ -12,6 +12,9 @@ export default class ProductController {
         const productData = req.body;
         let rutaFrontImg;
         let rutaBackImg;
+console.log(req.files.imgFront)
+console.log(req.files.imgBack)
+
         if (req.files && req.files.frontImg) {
             const frontImg = req.files.frontImg[0].path;
             const rutaFrontImg = frontImg.replace('public/src/', ''); // Elimina 'public/src/' de la ruta
