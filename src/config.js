@@ -20,7 +20,7 @@ export const envPort = process.env.PORT;
 // GitHub:
 export const envClientID = process.env.CLIENT_ID;
 export const envClientSecret = process.env.CLIENT_SECRET;
-export const envCallbackURL = process.env.CALLBACK_URL;
+
 
 // JWT:
 export const envCoderSecret = process.env.CODER_SECRET;
@@ -49,19 +49,12 @@ export const envResetPassToken = process.env.RESET_PASSWORD_TOKEN;
 // Cookie para guardar el email del usuario que solicita correo de restablecimiento de contraseña:
 export const envResetPassCookieEmail = process.env.RESET_PASSWORD_COOKIE; 
 
-// Enlace para redireción a Reset pass view:
-export const envUrlResetPass = process.env.URL_REST_PASS;
-
 // Keys de Stipe: 
 export const envStripeKeyPublic = process.env.STRIPE_KEY_PUBLIC;
 export const envStripeKeySecret = process.env.STIRPE_KEY_SECRET;
 
 // Cookie con la orden de compra: 
 export const envPurchaseOrder = process.env.PURCHASE_ORDER;
-
-// URLs para Stripe: 
-export const envSuccess_url = process.env.SUCCESS_URL;
-export const envCancel_url = process.env.CANCEL_URL;
 
 console.log(program.opts())
 

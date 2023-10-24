@@ -1,9 +1,7 @@
 import Stripe from 'stripe';
 import {
     envStripeKeySecret,
-    envStripeKeyPublic,
-    envSuccess_url,
-    envCancel_url
+    envStripeKeyPublic
 } from '../config.js';
 
 // Clase para PaymentsService:
@@ -37,8 +35,8 @@ export default class PaymentsService {
                     uid: uid,
                     email: email
                 },
-                success_url: `${envSuccess_url}`,
-                cancel_url: `${envCancel_url}`,
+                success_url: 'https://proyecto-final-bk-cd-railway-production-19ab.up.railway.app/paySuccess',
+                cancel_url: 'https://proyecto-final-bk-cd-railway-production-19ab.up.railway.app/cart}',
             })
             if (paymentIntent.url) {
                 response.statusCode = 200;
