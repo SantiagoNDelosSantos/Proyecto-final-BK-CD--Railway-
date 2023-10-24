@@ -18,19 +18,19 @@ export default class UserController {
             const identification = req.files.identification[0].path;
             const indice = identification.indexOf(parteComun);
             const ruta = identification.substring(indice + parteComun.length);
-            rutaIdentification = `${ruta}`
+            rutaIdentification = ruta
         }
         if (req.files && req.files.proofOfAddress) {
             const proofOfAddress = req.files.proofOfAddress[0].path;
             const indice = proofOfAddress.indexOf(parteComun);
             const ruta = proofOfAddress.substring(indice + parteComun.length);
-            rutaProofOfAddres = `${ruta}`
+            rutaProofOfAddres = ruta
         }
         if (req.files && req.files.bankStatement) {
             const bankStatement = req.files.bankStatement[0].path;
             const indice = bankStatement.indexOf(parteComun);
             const ruta = bankStatement.substring(indice + parteComun.length);
-            rutaBankStatement = `${ruta}`
+            rutaBankStatement = ruta
         }
         try {
             if (!uid || !mongoose.Types.ObjectId.isValid(uid)) {
