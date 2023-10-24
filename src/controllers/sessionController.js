@@ -7,6 +7,10 @@ import {
     envResetPassCookieEmail
 } from "../config.js"
 
+
+import __dirname from '../utils.js'
+
+
 export default class SessionController {
     constructor() {
         this.sessionService = new SessionService();
@@ -166,12 +170,14 @@ export default class SessionController {
         let rutaPhotoProfile;
 
         const parteComun = 'public\\';
-        if (req.file && req.file.path) {
-            const pathPhotoProfile = req.file.path;
+
+        if (req.file && req.file.photo) {
+            const pathPhotoProfile = req.file.photo[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
-            rutaPhotoProfile = ruta
+            rutaPhotoProfile = __dirname + ruta
         }
+
         let updateProfile = {};
         if (newName) {
             updateProfile.first_name = newName;
