@@ -12,20 +12,27 @@ export default class ProductController {
         const productData = req.body;
         let rutaFrontImg;
         let rutaBackImg;
-console.log(req.files.frontImg[0].path)
-console.log(req.files.backImg[0].path)
+// Creamos algunas variables para almacenar las rutas definitiva
 
-        if (req.files && req.files.frontImg) {
-            const frontImg = req.files.frontImg[0].path;
-            const rutaFrontImg = frontImg.replace('public/src/', ''); // Elimina 'public/src/' de la ruta
-            rutaFrontImg = rutaFrontImg.replace(/ /g, '%20'); // Reemplaza espacios con %20
-        }
-        
-        if (req.files && req.files.backImg) {
-            const backImg = req.files.backImg[0].path;
-            const rutaBackImg = backImg.replace('public/src/', ''); // Elimina 'public/src/' de la ruta
-            rutaBackImg = rutaBackImg.replace(/ /g, '%20'); // Reemplaza espacios con %20
-        }
+// Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
+const parteComun = 'public\\';
+if (req.files && req.files.frontImg) {
+
+    const frontImg = req.files.frontImg[0].path;
+    console.log(frontImg)
+    const indice = frontImg.indexOf(parteComun);
+    console.log(indice)
+    const ruta = frontImg.substring(indice + parteComun.length);
+    console.log(ruta)
+    rutaFrontImg = ruta
+};
+if (req.files && req.files.backImg) {
+    const backImg = req.files.backImg[0].path;
+    const indice = backImg.indexOf(parteComun);
+    const ruta = backImg.substring(indice + parteComun.length);
+    rutaBackImg = ruta
+};
+
         
         
         const price = parseFloat(productData.price);
