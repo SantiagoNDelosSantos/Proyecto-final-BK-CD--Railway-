@@ -168,10 +168,11 @@ export default class SessionController {
 
         const parteComun = 'public\\';
         if (req.file && req.file.path) {
-            const pathPhotoProfile = req.file[0].path;
+            const pathPhotoProfile = req.file.path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
-            rutaPhotoProfile = __dirname + ruta
+            rutaPhotoProfile = ruta
+            console.log(rutaPhotoProfile)
         }
 
         let updateProfile = {};

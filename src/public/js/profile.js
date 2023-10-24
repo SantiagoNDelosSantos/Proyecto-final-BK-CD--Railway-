@@ -27,21 +27,17 @@ async function verPerfil() {
             let h1 = document.getElementById('h1');
             h1.style = style = "display: block";
 
-
-
             let imgFrontPath = user.photo;
             let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
 
-            console.log(user.photo)
-            console.log(imgFrontPathAfterImgs)
-
+            let imgFrontPathAfterImgs2 = imgFrontPathAfterImgs.replace(/\\/g, '/');
 
             let htmlPerfil = "";
             htmlPerfil += `
             <div style="width: 92%; margin-left: 1.7em; border: 0.1em solid rgb(188 188 188 / 78%); padding: 1em; border-radius: 1em; margin-bottom: 1em !important;">
                 <div style="display: flex; justify-content: center; gap: 2em; flex-direction: row; align-items: center; margin: 0em 2em; ">
                     <div style="display: flex; justify-content: center; gap: 0em; flex-direction: column; align-items: center; width: 80%; border-right: 0.1em solid #95d0f7; padding-right: 1.5em">
-                    <img src=${imgFrontPathAfterImgs} alt="ADD-PHOTO" border="0" style="height: 25vh; width: 25vh; object-fit: cover; object-position: center; border-radius: 1em; margin-bottom: 0em;" />
+                    <img src="${imgFrontPathAfterImgs2}" alt="ADD-PHOTO" border="0" style="height: 25vh; width: 25vh; object-fit: cover; object-position: center; border-radius: 1em; margin-bottom: 0em;" />
                     </div>
                     <div style="display: flex; justify-content: center; gap: 2em; flex-direction: column; align-items: center; flex-grow: 1;">
                         <div style="display: flex; gap: 6em;">
@@ -115,16 +111,15 @@ async function editarPerfil() {
 
             let imgFrontPath = user.photo;
             let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
-
-            console.log(user.photo)
-            console.log(imgFrontPathAfterImgs)
+            
+            let imgFrontPathAfterImgs2 = imgFrontPathAfterImgs.replace(/\\/g, '/');
 
             let htmlPerfil = ""
             htmlPerfil += `
             <div style="width: 190%; margin-left: -8.3em; border: 0.1em solid rgb(188 188 188 / 78%); padding: 1em; border-radius: 1em; margin-bottom: 1em !important;">
                 <form id="editProfileForm" style="display: flex; justify-content: center; gap: 2em; flex-direction: row; align-items: center; width: 100%;">
                     <div style="display: flex; justify-content: center; gap: 0em; flex-direction: column; align-items: center; width: 80%; border-right: 0.1em solid #95d0f7; padding-right: 1.5em">
-                    <img src=${imgFrontPathAfterImgs} alt="ADD-PHOTO" border="0" style="height: 25vh; width: 25vh; object-fit: cover; object-position: center; border-radius: 1em; margin-bottom: 1em;" />
+                    <img src="${imgFrontPathAfterImgs2}" alt="ADD-PHOTO" border="0" style="height: 25vh; width: 25vh; object-fit: cover; object-position: center; border-radius: 1em; margin-bottom: 1em;" />
                         <div>
                             <div style="display: flex; justify-content: center; gap: 1em; flex-direction: column; align-items: center;">
                                 <input type="file" id="archivoInputProfile" name="profile" style="display: none;">
