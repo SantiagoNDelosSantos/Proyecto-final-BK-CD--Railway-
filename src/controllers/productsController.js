@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import ErrorEnums from "../errors/error.enums.js";
 import CustomError from "../errors/customError.class.js";
 import ErrorGenerator from "../errors/error.info.js";
-import {__dirname} from "../utils.js";
+
+import __dirname from './utils.js';
 
 export default class ProductController {
     constructor() {
