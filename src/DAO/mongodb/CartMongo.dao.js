@@ -2,13 +2,17 @@ import mongoose from "mongoose";
 import {
     cartModel
 } from "./models/carts.model.js";
-
 import {
     envMongoURL
 } from "../../config.js";
 
+// Clase para el DAO de carritos:
 export default class CartsDAO {
+
+    // Conexión Mongoose:
     connection = mongoose.connect(envMongoURL);
+
+    // Crear un carrito - DAO:
     async createCart() {
         let response = {};
         try {
@@ -24,19 +28,26 @@ export default class CartsDAO {
         };
         return response;
     };
+
+    // Traer un carrito por su ID - DAO:
     async getCartById(cid) {
         let response = {};
         try {
             const result = await cartModel.findOne({
                 _id: cid
             }).populate(['products.product', 'tickets.ticketsRef']);
+
             if (result === null) {
                 response.status = "not found cart";
             } else {
+                // Filtra los productos válidos (No nulos):
                 const validProducts = result.products.filter(prod => prod.product !== null);
+                // Filtramos los productos nulos (No validos):
                 const removedProducts = result.products.filter(prod => prod.product === null);
                 if (validProducts.length < result.products.length) {
+                    // Reemplazamos la propiedad products del carrito con los productos válidos:
                     result.products = validProducts;
+                    // Guardamos el carrito actualizado en la base de datos:
                     await result.save();
                     response.status = "success";
                     response.result = result;
@@ -52,6 +63,8 @@ export default class CartsDAO {
         }
         return response;
     }
+
+    // Traer todos los carritos - DAO: 
     async getAllCarts() {
         let response = {};
         try {
@@ -68,26 +81,34 @@ export default class CartsDAO {
         };
         return response;
     };
+
+    // Agregar un producto a un carrito:
     async addProductToCart(cid, product, quantity) {
         let response = {};
         try {
+            // Obtener el carrito por ID
             const cart = await this.getCartById(cid);
+            // Verificar si el carrito existe
             if (cart.result === null) {
                 response.status = "not found cart";
             } else {
+                // Filtrar los productos válidos (no nulos)
                 const validProducts = cart.result.products.filter(item => item.product !== null);
+                // Identificar el índice del producto en el carrito
                 const existingProductIndex = validProducts.findIndex(item => item.product._id.toString() === product._id.toString());
                 if (existingProductIndex !== -1) {
+                    // Si el producto ya está en el carrito, solo se actualiza la cantidad (quantity).
                     validProducts[existingProductIndex].quantity += parseInt(quantity, 10);
                     await cart.result.save();
                     response.status = "success";
                     response.result = cart;
                 } else {
+                    // Si el producto no está en el carrito, se agrega con la cantidad proporcionada.
                     validProducts.push({
                         product: product,
                         quantity: parseInt(quantity, 10)
                     });
-                    cart.result.products = validProducts;
+                    cart.result.products = validProducts; // Actualizar la propiedad products
                     await cart.result.save();
                     response.status = "success";
                     response.result = cart;
@@ -99,6 +120,8 @@ export default class CartsDAO {
         }
         return response;
     }
+
+    // Agregar un ticket a un carrito - DAO:
     async addTicketToCart(cid, ticketID) {
         let response = {};
         try {
@@ -119,6 +142,8 @@ export default class CartsDAO {
         };
         return response;
     };
+
+    // Borrar un producto de un carrito - DAO: 
     async deleteProductFromCart(cid, pid) {
         let response = {};
         try {
@@ -142,6 +167,8 @@ export default class CartsDAO {
         };
         return response;
     };
+
+    // Eliminar todos los productos de un carrito - DAO: 
     async deleteAllProductsFromCart(cid) {
         let response = {};
         try {
@@ -164,22 +191,31 @@ export default class CartsDAO {
         };
         return response;
     };
+
+    // Actualizar un carrito - DAO:
     async updateCart(cid, updatedCartFields) {
         let response = {};
         try {
+            // Obtener el carrito actual:
             const currentCart = await this.getCartById(cid);
+            // IDs de los productos en el carrito, actualmente:
             const productIdsCart = currentCart.result.products.map((product) => product.product._id.toString());
+            // Extraemos los productos enviados para actualizar: 
             const {
                 products: productsUp,
                 ...restOfCartFields
             } = updatedCartFields;
+            // Verificamos si todos los productos enviados ya existen en el carrito y tienen la misma cantidad:
             const allProductsExistWithSameQuantity = productsUp.every((productUp) => {
+                // Buscamos cada producto en el carrito:
                 const productIndex = productIdsCart.indexOf(productUp.product);
                 if (productIndex !== -1) {
+                    // Si el producto ya se encuentra en el carrito, entocnes comparamos su quantity actual con el nuevo:
                     return currentCart.result.products[productIndex].quantity === productUp.quantity;
                 }
                 return false;
             });
+            // Si allProductsExistWithSameQuantity es true significa que los productos ya están en el carrito con la misma cantidad, no es necesario realizar la actualización. Si es false significa que hay productos diferentes o con diferente cantidad, por ende, se procede con la actualización:
             if (allProductsExistWithSameQuantity) {
                 response.status = "update is equal to current";
             } else {
@@ -201,6 +237,8 @@ export default class CartsDAO {
         };
         return response;
     };
+
+    // Actualizar la cantidad de un produco en carrito - DAO: 
     async updateProductInCart(cid, pid, quantity) {
         let response = {};
         try {
@@ -226,7 +264,9 @@ export default class CartsDAO {
             response.message = "Error al actualizar el producto en el carrito - DAO: " + error.message;
         };
         return response;
-    }; 
+    };
+
+    // Eliminar todos los productos de un carrito: 
     async deleteCart(cid) {
         let response = {};
         try {
@@ -244,4 +284,5 @@ export default class CartsDAO {
         };
         return response;
     };
+
 };

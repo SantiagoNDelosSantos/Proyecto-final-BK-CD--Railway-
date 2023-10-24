@@ -13,6 +13,8 @@ import {
 
 const productsRouter = Router();
 let productController = new ProductController();
+
+// Crear un producto - Router:
 productsRouter.post('/', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -28,6 +30,8 @@ productsRouter.post('/', passport.authenticate('jwt', {
         res.status(result.statusCode).send(result);
     };
 });
+
+// Traer un producto por su ID - Router: 
 productsRouter.get('/:pid', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -36,7 +40,9 @@ productsRouter.get('/:pid', passport.authenticate('jwt', {
     if (result !== undefined) {
         res.status(result.statusCode).send(result);
     };
-}); 
+});
+
+// Traer todos los productos - Router: 
 productsRouter.get('/', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -46,6 +52,8 @@ productsRouter.get('/', passport.authenticate('jwt', {
         res.status(result.statusCode).send(result);
     };
 });
+
+// Eliminar un producto por su ID - Router:
 productsRouter.delete('/:pid', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -55,6 +63,8 @@ productsRouter.delete('/:pid', passport.authenticate('jwt', {
         res.status(result.statusCode).send(result);
     };
 });
+
+// Eliminar todos los productos publicados por un usuario premium - router:
 productsRouter.delete('/deleteProdPremium/:uid', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -64,6 +74,8 @@ productsRouter.delete('/deleteProdPremium/:uid', passport.authenticate('jwt', {
         res.status(result.statusCode).send(result);
     };
 });
+
+// Actualizar un producto - Router:
 productsRouter.put('/:pid', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -79,4 +91,6 @@ productsRouter.put('/:pid', passport.authenticate('jwt', {
         res.status(result.statusCode).send(result);
     };
 });
+
+// Export productsRouter:
 export default productsRouter;

@@ -7,10 +7,17 @@ import {
     envPurchaseOrder
 } from '../config.js';
 
+// Clase para el Controller de carritos:
 export default class CartController {
+
     constructor() {
+        // Instancia de CartsService:
         this.cartService = new CartService();
     }
+
+    // Métodos de CartController:
+
+    // Crear un carrito - Controller:
     async createCartController(req, res) {
         let response = {};
         try {
@@ -30,6 +37,8 @@ export default class CartController {
         };
         return response;
     };
+
+    // Traer un carrito por su ID - Controller:
     async getCartByIdController(req, res, next) {
         const cid = req.params.cid;
         try {
@@ -64,6 +73,9 @@ export default class CartController {
         };
         return response;
     };
+
+
+    // Traer todos los carritos - Controller: 
     async getAllCartsController(req, res) {
         let response = {};
         try {
@@ -85,6 +97,8 @@ export default class CartController {
         };
         return response;
     };
+
+    // Agregar un producto a un carrito - Controller:
     async addProductInCartController(req, res, next) {
         const cid = req.params.cid;
         const pid = req.params.pid;
@@ -110,7 +124,9 @@ export default class CartController {
         };
         let response = {};
         try {
+            // Extraemos el ID del user: 
             const userId = req.user.userID;
+            // Enviamos el cid, pid, quantity y el user al service: 
             const resultService = await this.cartService.addProductToCartService(cid, pid, quantity, userId);
             response.statusCode = resultService.statusCode;
             response.message = resultService.message;
@@ -129,6 +145,8 @@ export default class CartController {
         };
         return response;
     };
+
+    // Generar orden de compra para el usuario - Controller:
     async purchaseOrderController(req, res, next) {
         const cid = req.params.cid;
         let response = {};
@@ -151,9 +169,12 @@ export default class CartController {
         };
         return response;
     }
+
+    // Actualizar products, cart y generar el ticket si el pago de la compra fue exitoso - Controller: 
     async purchaseSuccessController(req, res, next) {
         const cid = req.params.cid;
         const email = req.user.email;
+        // Obtenrmos al orden del a cookie
         const order = req.signedCookies[envPurchaseOrder];
         try {
             if (order.successfulProducts.length > 0) {
@@ -197,6 +218,7 @@ export default class CartController {
             } else if (resultService.statusCode === 404) {
                 req.logger.warn(response.message);
             } else if (resultService.statusCode === 200) {
+                // Luego de registrar la orden en la DB vaciamos la cookie:
                 res.cookie(envPurchaseOrder, "", {
                     httpOnly: true,
                     signed: true,
@@ -211,6 +233,8 @@ export default class CartController {
         };
         return response;
     };
+
+    // Eliminar un producto en carrito - Controller:
     async deleteProductFromCartController(req, res, next) {
         const cid = req.params.cid;
         const pid = req.params.pid;
@@ -246,6 +270,8 @@ export default class CartController {
         };
         return response;
     };
+
+    // Eliminar todos los productos de un carrito - Controller:
     async deleteAllProductsFromCartController(req, res, next) {
         const cid = req.params.cid;
         let response = {};
@@ -268,6 +294,8 @@ export default class CartController {
         };
         return response;
     };
+
+    //  Actualizar un carrito - Controler:
     async updateCartController(req, res, next) {
         const cid = req.params.cid;
         const updatedCartFields = req.body;
@@ -322,6 +350,8 @@ export default class CartController {
         };
         return response;
     };
+
+    // Actualizar la cantidad de un producto en carrito - Controller:
     async updateProductInCartController(req, res, next) {
         const cid = req.params.cid;
         const pid = req.params.pid;
@@ -364,7 +394,9 @@ export default class CartController {
             req.logger.error(response.message);
         };
         return response;
-    }; 
+    };
+
+    // Eliminar un carrito - Controller: 
     async deleteCartController(req, res, next) {
         const cid = req.params.cid;
         try {
@@ -399,4 +431,5 @@ export default class CartController {
         };
         return response;
     };
+
 };

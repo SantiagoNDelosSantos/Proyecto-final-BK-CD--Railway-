@@ -6,8 +6,13 @@ import {
     envMongoURL
 } from "../../config.js";
 
+// Clase para el DAO de mensajes: 
 export default class MessageDAO {
+
+    // Conexión Mongoose:
     connection = mongoose.connect(envMongoURL);
+
+    // Crear un mensaje - DAO:
     async createMessage(message) {
         let response = {};
         try {
@@ -19,6 +24,8 @@ export default class MessageDAO {
         };
         return response;
     };
+
+    // Traer todos los mensajes - DAO: 
     async getAllMessage() {
         let response = {};
         try {
@@ -36,14 +43,19 @@ export default class MessageDAO {
         };
         return response;
     };
+
+    // Borrar un mensaje - DAO:
     async deleteMessage(mid, uid) {
         let response = {};
         try {
             let getSms = await messageModel.findOne({
                 _id: mid
             });
+            // Extraemos el uid de la persona que envio el mensaje:
             let UID = getSms.userId;
+            // Comparamos si el uid de quien intenta borrar el mensaje, conincide con el uid de quien lo envio:
             if (uid === UID) {
+                // Si la persona solo quiere borrar sus propios mensajes, se le permite la acción:
                 let result = await messageModel.deleteOne({
                     _id: mid
                 });
@@ -53,6 +65,7 @@ export default class MessageDAO {
                     response.status = "success";
                 };
             } else {
+                // Si la persona intenta borrar un mensaje que no le pertenece, se le deniega la acción:
                 response.status = "unauthorized";
             }
         } catch (error) {
@@ -61,4 +74,5 @@ export default class MessageDAO {
         };
         return response;
     };
+
 };

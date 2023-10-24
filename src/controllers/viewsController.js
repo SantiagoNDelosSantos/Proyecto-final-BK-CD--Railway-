@@ -1,11 +1,17 @@
 import ProductService from '../services/products.service.js';
 import MessageService from "../services/message.service.js";
 
+// Clase para el Controller de vistas: 
 export default class ViewsController {
+
     constructor() {
+        // Instancia de ProductService:
         this.productService = new ProductService();
+        // Instancias de ViewsService:
         this.messageService = new MessageService();
     }
+
+    // PRODUCTOS - VISTAS:
     async getAllProductsControllerV(limit, page, sort, filtro, filtroVal) {
         let limitV = limit || 10;
         let pageV = page || 1;
@@ -39,6 +45,8 @@ export default class ViewsController {
         }
         return response;
     }
+
+    // CHAT - VISTA: 
     async getAllMessageControllerV() {
         let response = {};
         try {

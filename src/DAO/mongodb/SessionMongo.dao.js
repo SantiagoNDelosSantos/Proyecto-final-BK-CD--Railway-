@@ -2,8 +2,15 @@ import mongoose from "mongoose";
 import { userModel } from './models/users.model.js'
 import { envMongoURL } from "../../config.js";
 
+// Clase para el DAO de session:
 export default class SessionDAO {
+
+    // Conexión Mongoose:
     connection = mongoose.connect(envMongoURL);
+
+    // Métodos para el SessionDAO:
+
+     // Crear usuario - DAO: 
     async createUser(info) {
         let response = {};
         try {
@@ -16,6 +23,8 @@ export default class SessionDAO {
         };
         return response;
     };
+
+    // Buscar usuario - DAO:
     async getUser(identifier) {
         let response = {};
         try {
@@ -35,11 +44,12 @@ export default class SessionDAO {
         };
         return response;
     };
+
+    // Actualizar usuario - DAO:
     async updateUser(uid, updateUser) {
         let response = {};
         try {
             let result = await userModel.updateOne({_id: uid }, { $set: updateUser });
-            console.log("serv" + result)
             if (result.matchedCount === 0) {
                 response.status = "not found user";
             } else if (result.matchedCount === 1){
@@ -52,6 +62,8 @@ export default class SessionDAO {
         };
         return response;
     };
+
+    // Eliminar usuario - DAO:
     async deleteUser(uid) {
         let response = {};
         try {
@@ -67,4 +79,5 @@ export default class SessionDAO {
         };
         return response;
     };
+
 };

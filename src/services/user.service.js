@@ -8,17 +8,24 @@ import {
     envCoderTokenCookie
 } from '../config.js'
 
+// Clase para el Service de usuarios: 
 export default class SessionService {
+
     constructor() {
         this.userDAO = new UserDAO();
         this.productsService = new ProductService();
         this.cartService = new CartService();
         this.mail = new Mail();
-    } 
+    }
+
+    // Métodos para UserService: 
+
+    // Subir documentación de usuario - Service: 
     async uploadPremiumDocsService(uid, documentsRuta, documentNames) {
         let response = {};
         try {
             const resultDAO = await this.userDAO.uploadPremiumDocs(uid, documentsRuta, documentNames);
+            // Validamos los resultados:
             if (resultDAO.status === "error") {
                 response.statusCode = 500;
                 response.message = resultDAO.message;
@@ -38,9 +45,12 @@ export default class SessionService {
         };
         return response;
     };
+
+    // Cambiar rol del usuario - Service:
     async changeRoleService(res, uid, requesterRole) {
         let response = {};
         try {
+            // Buscamos al usuario en la base de datos por su ID: 
             const resultDAO = await this.userDAO.getUser(uid);
             if (resultDAO.status === "error") {
                 response.statusCode = 500;
@@ -49,19 +59,26 @@ export default class SessionService {
                 response.statusCode = 404;
                 response.message = `Usuario no encontrado.`;
             } else if (resultDAO.status === "success") {
+                // Si el usuario existe, extraemos su rol actual: 
                 let userRole = resultDAO.result.role;
                 const newRole = userRole === "user" ? "premium" : "user";
                 const updateUser = {
                     role: newRole
                 };
+                // Obtener los nombres de los documentos subidos y creamos un objeto con los name de los archivos que esperamos:
                 let docsSubidos = resultDAO.result.documents.map(doc => doc.name);
                 let documentNames = ["Identificación", "Comprobante de domicilio", "Comprobante de estado de cuenta"];
+                // Verificamos si estan faltando documentos: 
                 let documentosFaltantes = documentNames.filter(name => !docsSubidos.includes(name));
+                // Creamos una variable para guardar luego el resultado del DAO: 
                 let resultRolPremium
+                // Resultado de borrar los productos del usuario premium, cuando vuelve a tener role user:
                 let deleteProdPremRes
                 if (requesterRole === "admin" && newRole === "premium") {
+                    // Si es el admin quien desea actualizar el role del usuario a premium, no se valida la documentación:
                     resultRolPremium = await this.userDAO.updateUser(uid, updateUser);
                 } else if (requesterRole === "user" && newRole === "premium") {
+                    // Si el usuario quiere actualizar su role a premium, verificamos que tenga subidos todos los documentos requeridos:
                     if (docsSubidos.length === 3) {
                         resultRolPremium = await this.userDAO.updateUser(uid, updateUser);
                     } else {
@@ -70,8 +87,10 @@ export default class SessionService {
                         };
                     }
                 } else if (newRole === "user") {
+                    // Si el usuario premium se cambia de role a user, entonces eliminamos todos sus productos:
                     deleteProdPremRes = await this.productsService.deleteAllPremiumProductService(uid, uid, userRole);
                     if (deleteProdPremRes.statusCode === 200 || deleteProdPremRes.statusCode === 404) {
+                        // Si el usuario premium quiere volver a ser usuario, no validamos los docs: 
                         resultRolPremium = await this.userDAO.updateUser(uid, updateUser);
                     };
                 };
@@ -85,16 +104,20 @@ export default class SessionService {
                     response.statusCode = 404;
                     response.message = "Usuario no encontrado.";
                 } else if (resultRolPremium.status === "success") {
+                    // De premium a user:
                     if (resultRolPremium.status === "success" && newRole === "user") {
                         response.statusCode = 200;
                         response.message = `Usuario actualizado exitosamente, su rol ha sido actualizado a ${newRole}. ${deleteProdPremRes.message}`;
                     } else if (resultRolPremium.status === "success" && newRole === "premium") {
+                        // De user a premium:
                         response.statusCode = 200;
                         response.message = `Usuario actualizado exitosamente, su rol ha sido actualizado a ${newRole}.`;
                     };
                     if (requesterRole !== "admin") {
+                        // Traemos al usuario actualizado:
                         const newUser = await this.userDAO.getUser(uid);
                         if (newUser.status = "success") {
+                            //  Actualizamos el role del usuario en el token: 
                             let token = jwt.sign({
                                 email: newUser.result.email,
                                 first_name: newUser.result.first_name,
@@ -104,6 +127,7 @@ export default class SessionService {
                             }, envCoderSecret, {
                                 expiresIn: '7d'
                             });
+                            // Sobrescribimos la cookie:
                             res.cookie(envCoderTokenCookie, token, {
                                 httpOnly: true,
                                 signed: true,
@@ -111,7 +135,6 @@ export default class SessionService {
                             })
                         }
                     };
-
                 };
             }
         } catch (error) {
@@ -120,10 +143,13 @@ export default class SessionService {
         };
         return response;
     };
+
+    // Obtener todos los usuarios - Controller:
     async getAllUsersService() {
         let response = {};
         try {
             const resultDAO = await this.userDAO.getAllUsers();
+            // Validamos los resultados:
             if (resultDAO.status === "error") {
                 response.statusCode = 500;
                 response.message = resultDAO.message;
@@ -141,6 +167,8 @@ export default class SessionService {
         };
         return response;
     };
+
+    // Eliminar usuarios inactivos (2 Días) - Service:
     async deleteInactivityUsersService(adminRole) {
         let response = {};
         try {
@@ -152,35 +180,48 @@ export default class SessionService {
                 response.statusCode = 404;
                 response.message = "No se han encontrado usuarios inactivos.";
             } else if (resultDAO.status === "success") {
+                // Usuarios regulares (Solo tienen carrito):
                 let cartDeletedError = [];
                 let cartDeletedSuccess = [];
+                // Usuarios premium (Pueden tener o no productos publicados):
                 let productsDeletedError = [];
                 let productsDeletedSuccess = [];
+                // Variable para validar si todos los correos se enviaron correctamente:
                 let envioExitoso = [];
                 let envioFallido = [];
                 for (let i = 0; i < resultDAO.result.length; i++) {
                     const user = resultDAO.result[i];
+                    // Extraemos los datos de cada usuario:
                     let name = user[0];
                     let email = user[1];
                     let uid = user[2].toString();
                     let cid = user[3].toString();
                     let userRole = user[4];
+                    // Borramos el carrito del usuarios:
                     let deleteCart = await this.cartService.deleteCartService(cid);
+                    // Validamos los resultados:
                     if (deleteCart) {
                         if (deleteCart.statusCode === "error") {
+                            // Error al eliminar carrito:
                             cartDeletedError.push(" " + email);
                         } else if (deleteCart.statusCode === 200) {
+                            // Exito al eliminar carrito:
                             cartDeletedSuccess.push(" " + email)
                         }
                     }
+                    // Si el usuario es premium ademas de su carrito se debe elimianar los productos que tenga publicados.
                     if (userRole === "premium") {
+                        // Borramos todos los productos publicados por el usuario (Enviamos el adminRole para activar la notificación de que ha sido el admin quien han eliminado los productos):
                         let deleteUserProducts = await this.productsService.deleteAllPremiumProductService(uid, uid, adminRole);
                         if (deleteUserProducts.statusCode === "error") {
+                            // Error al eliminar productos del usuario premium: 
                             productsDeletedError.push(" " + email);
                         } else if (deleteUserProducts.statusCode === 404 || deleteUserProducts.statusCode === 200) {
+                            // El usuario premium puede tener o no productos publicados, si devuelve 404 igual es success:
                             productsDeletedSuccess.push(" " + email)
                         }
                     };
+                    // Creamos el cuerpo del correo: 
                     let html = `
                     <table cellspacing="0" cellpadding="0" width="100%">
                         <tr>
@@ -207,6 +248,7 @@ export default class SessionService {
                         </tr>
                     </table>`
                     if (email) {
+                        // Envía el correo utilizando la dirección de correo electrónico proporcionada en 'email'
                         let resultSendMail = await this.mail.sendMail(email, "Notificación de eliminación de cuenta", html);
                         if (resultSendMail.accepted.length > 0) {
                             envioExitoso.push(" " + email);
@@ -260,4 +302,5 @@ export default class SessionService {
         };
         return response;
     };
+
 };

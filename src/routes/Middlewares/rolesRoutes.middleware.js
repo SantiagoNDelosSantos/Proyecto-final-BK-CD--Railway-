@@ -1,3 +1,6 @@
+// Estos middlewares de role son para regular el acceso a las rutas que no sean de vistas (Con res.send):
+
+// Denegar la petición a cualquiera que no sea admin - Router:
 export const rolesRMiddlewareAdmin = (req, res, next) => {
     if (req.user.role === 'admin') {
         next()
@@ -10,6 +13,8 @@ export const rolesRMiddlewareAdmin = (req, res, next) => {
         });
     };
 };
+
+// Denegar la petición a cualquiera que no sea usuario regular o premium:
 export const rolesRMiddlewareUsers = (req, res, next) => {
     if (req.user.role === 'user' || req.user.role === 'premium') {
         next()
@@ -22,6 +27,8 @@ export const rolesRMiddlewareUsers = (req, res, next) => {
         });
     };
 };
+
+// Denegar la petición a cualquiera que no sea admin o premium: 
 export const rolesRMiddlewareAdminAndPremium = (req, res, next) => {
     if (req.user.role === 'admin' || req.user.role === 'premium') {
         next()
@@ -34,6 +41,8 @@ export const rolesRMiddlewareAdminAndPremium = (req, res, next) => {
         });
     };
 };
+
+// Denegar la petición a cualquier persona no autentícada: 
 export const rolesRMiddlewarePublic = (req, res, next) => {
     if (req.user.role === 'user' || req.user.role === 'premium' || req.user.role === 'admin') {
         next();

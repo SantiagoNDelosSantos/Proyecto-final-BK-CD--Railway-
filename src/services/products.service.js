@@ -1,11 +1,19 @@
 import ProductsDAO from "../DAO/mongodb/ProductsMongo.dao.js";
 import Mail from '../email/nodemailer.js'
 
+
+// Clase para el Service de productos: 
 export default class ProductService {
+
+    // Constructor de ProductService:
     constructor() {
         this.productDao = new ProductsDAO();
         this.mail = new Mail();
     }
+
+    // Métodos de ProductService:
+
+    // Crear producto - Service:
     async createProductService(info) {
         let response = {};
         try {
@@ -24,6 +32,8 @@ export default class ProductService {
         };
         return response;
     };
+
+    // Traer un producto por su ID - Service:
     async getProductByIdService(pid) {
         let response = {};
         try {
@@ -45,6 +55,8 @@ export default class ProductService {
         };
         return response;
     };
+
+    // Traer todos los productos - Service: 
     async getAllProductsService(limit, page, sort, filtro, filtroVal) {
         let response = {};
         try {
@@ -66,6 +78,8 @@ export default class ProductService {
         };
         return response;
     };
+
+    // Eliminar un producto por su ID - Service:
     async deleteProductService(pid, requester) {
         let response = {};
         try {
@@ -77,6 +91,7 @@ export default class ProductService {
                 response.statusCode = 404;
                 response.message = `No se encontró ningún producto con el ID ${pid}.`;
             } else if (productInfo.status === "success") {
+                // Si el requester es admin puede eliminar cualquier producto, tanto los suyos como los publicados por usuarios premium. En el caso del user premium este solo puede eliminar los productos que le pertenezcan: 
                 if (requester === "admin" || productInfo.result.email === requester) {
                     const resultDAO = await this.productDao.deleteProduct(pid);
                     if (resultDAO.status === "error") {
@@ -86,15 +101,19 @@ export default class ProductService {
                         response.statusCode = 404;
                         response.message = `No se encontró ningún producto con el ID ${pid}.`;
                     } else if (resultDAO.status === "success") {
+                        // Cuando un admin elimina un producto publicado por el mismo:
                         if (requester === "admin" && productInfo.result.email === null) {
                             response.statusCode = 200;
                             response.message = "Producto eliminado exitosamente.";
                             response.result = resultDAO.result;
-                        } else if (productInfo.result.email === requester) { 
+                        } else if (productInfo.result.email === requester) {
+                            // Cuando un usuario premium borra un porducto publicado por el mismo: 
                             response.statusCode = 200;
                             response.message = "Producto eliminado exitosamente.";
                             response.result = resultDAO.result;
                         } else if (requester === "admin" && productInfo.result.email !== null) {
+                            // Cuando un admin elimina un producto que pertenece a un usaurio premium, en dicho caso se envia el correo de notificación:
+                            // Cuerpo del correo:
                             let html = `
                                 <table cellspacing="0" cellpadding="0" width="100%">
                                     <tr>
@@ -120,7 +139,9 @@ export default class ProductService {
                                         </td>
                                     </tr>
                                 </table>`;
+                            // Enviamos el correo al Nodemailer: 
                             const resultSendMail = await this.mail.sendMail(productInfo.result.email, "Notificación de eliminación de producto", html);
+                            // Verificamos si el correo se envió correctamente:
                             if (resultSendMail.accepted.length > 0) {
                                 response.statusCode = 200;
                                 response.message = "Producto eliminado y correo de notificación enviado al usuario premium exitosamente.";
@@ -132,6 +153,7 @@ export default class ProductService {
                         }
                     }
                 } else {
+                    // Si el user premium intenta eliminar un producto que no le pertenecer se le deniega la acción:
                     response.statusCode = 403;
                     response.message = "Solo puedes eliminar los productos que te pertenecen.";
                 };
@@ -142,11 +164,12 @@ export default class ProductService {
         };
         return response;
     };
+
+    // Eliminar todos los productos publicados por un usuario premium - Service:
     async deleteAllPremiumProductService(uid, userRequestId, role) {
         let response = {};
         try {
             if (role === "admin" || uid === userRequestId) {
-
                 // Si el role es admin puede eliminar todos los productos publicados por cualquier usuario. Pero se les envia un correo de notificación a dichos usuarios.
                 // Los usuarios solo pueden eliminar todos los productos que ellos mismos hayan publicado siendo usuarios premium.
                 const resultDAO = await this.productDao.deleteAllPremiumProduct(uid, role);
@@ -157,13 +180,11 @@ export default class ProductService {
                     response.statusCode = 404;
                     response.message = `No se encontraron productos asociados a esta cuenta.`;
                 } else if (resultDAO.status === "success") {
-
                     // Si no se devuelve el userEmail significa que fue el usuario premium quien ha eliminado todos sus productos, ya sea al cerrar su cuenta o al cambiar su role de premium a user, por ende, no se necesita enarle un correo de notificación: 
                     if (!resultDAO.userEmail) {
                         response.statusCode = 200;
                         response.message = resultDAO.message
                     } else if (resultDAO.userEmail) {
-
                         // Cuerpo del correo
                         let html = `
                         <table cellspacing="0" cellpadding="0" width="100%">
@@ -184,6 +205,7 @@ export default class ProductService {
                                 <td style="text-align: center;">
                                 <p style="font-size: 16px; font-weight: bold;">Productos eliminados:</p>
                             `;
+                        // Agregar los nombres de los productos eliminados al cuerpo del correo
                         resultDAO.deletedProducts.forEach((productName) => {
                             html += `<p style="font-size: 16px;"> - ${productName}</p>`;
                         });
@@ -194,7 +216,9 @@ export default class ProductService {
                             </tr>
                         </table>
                         `;
+                        // Enviamos el correo al Nodemailer: 
                         const resultSendMail = await this.mail.sendMail(resultDAO.userEmail, "Notificación de eliminación de producto", html);
+                        // Verificamos si el correo se envió correctamente:
                         if (resultSendMail.accepted.length > 0) {
                             response.statusCode = 200;
                             response.message = "Productos eliminados y correo de notificación enviado al usuario premium exitosamente.";
@@ -206,6 +230,7 @@ export default class ProductService {
                     }
                 };
             } else {
+                // Si el role no es admin y el id del usuario que hace la petición no coincide con el id del usuario cuyos productos se desea eliminar,  se deniega la acción:
                 response.statusCode = 403;
                 response.message = "Solo puedes eliminar los productos que te pertenecen.";
             };
@@ -215,6 +240,8 @@ export default class ProductService {
         };
         return response;
     };
+
+    // Actualizar un producto - Service: 
     async updateProductService(pid, updateProduct, owner) {
         let response = {};
         try {
@@ -226,6 +253,7 @@ export default class ProductService {
                 response.statusCode = 404;
                 response.message = `No se encontró ningún producto con el ID ${pid}.`;
             } else if (productInfo.status === "success") {
+                // Para actualizar stock de productos comprados:
                 if (owner === "stock") {
                     const resultDAO = await this.productDao.updateProduct(pid, updateProduct);
                     if (resultDAO.status === "error") {
@@ -241,6 +269,7 @@ export default class ProductService {
                     };
                 }
                 if (owner === "admin" && productInfo.result.owner === "admin" || productInfo.result.owner === owner) {
+                    // El admin solo puede actualizar sus propios productos (Por seguridad), lo mismo aplica a los usuarios premium:
                     const resultDAO = await this.productDao.updateProduct(pid, updateProduct);
                     if (resultDAO.status === "error") {
                         response.statusCode = 500;
@@ -257,6 +286,7 @@ export default class ProductService {
                         response.result = resultDAO.result;
                     };
                 } else {
+                    // Si el user premium que intenta actualizar un producto que no le pertenece se le deniega la actialización:
                     response.statusCode = 403;
                     response.message = "Solo puedes modificar los productos que te pertenecen.";
                 };
@@ -267,4 +297,5 @@ export default class ProductService {
         };
         return response;
     };
+
 };

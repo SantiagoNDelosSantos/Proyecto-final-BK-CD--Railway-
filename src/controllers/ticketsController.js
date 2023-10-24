@@ -4,10 +4,17 @@ import ErrorEnums from "../errors/error.enums.js";
 import CustomError from "../errors/customError.class.js";
 import ErrorGenerator from "../errors/error.info.js";
 
+// Clase para el Controller de tickets:
 export default class TicketController {
+
     constructor() {
+        // Instancia de TicketService:
         this.ticketService = new TicketService();
     }
+
+    // Métodos de TicketController: 
+
+    // Crear un ticket - Controller: 
     async createTicketController(req, res, next) {
         const ticketInfo = req.body;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,6 +72,8 @@ export default class TicketController {
         };
         return response;
     };
+
+    // Obtener todos los tickets de un usuario por su ID - Controller:
     async getTicketByIdController(req, res, next) {
         const tid = req.params.tid;
         try {
@@ -99,4 +108,5 @@ export default class TicketController {
         };
         return response;
     };
+
 };

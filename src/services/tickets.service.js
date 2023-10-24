@@ -1,9 +1,16 @@
 import TicketDAO from "../DAO/mongodb/TicketMongo.dao.js";
 
+// Clase para el Service de tickets:
 export default class TicketService {
+
+    // Constructor de TicketService:
     constructor() {
         this.ticketDao = new TicketDAO();
     }
+
+    // Métodos del TicketService: 
+
+    // Crear ticket - Service:
     async createTicketService(ticketInfo) {
         let response = {};
         try {
@@ -22,6 +29,8 @@ export default class TicketService {
         };
         return response;
     };
+
+    // Obtener todos los tickets de un usuario - Service:
     async getTicketByIdService(tid) {
         let response = {};
         try {
@@ -43,4 +52,5 @@ export default class TicketService {
         };
         return response;
     };
+
 };

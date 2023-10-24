@@ -1,9 +1,16 @@
 import MessageDAO from "../DAO/mongodb/MessageMongo.dao.js";
 
+// Clase para el Service de mensajes: 
 export default class MessageService {
+
+    // Constructor de MessageService:
     constructor() {
         this.messageDao = new MessageDAO();
     }
+
+    // Métodos de MessageService: 
+
+    // Crear un mensaje - Service:
     async createMessageService(message) {
         let response = {};
         try {
@@ -21,6 +28,8 @@ export default class MessageService {
         };
         return response;
     };
+
+    // Traer todos los mensajes - Service: 
     async getAllMessageService() {
         let response = {};
         try {
@@ -42,6 +51,8 @@ export default class MessageService {
         };
         return response;
     };
+
+    // Borrar un mensaje - DAO:
     async deleteMessageService(mid, uid) {
         let response = {};
         try {
@@ -65,4 +76,5 @@ export default class MessageService {
         };
         return response;
     };
+
 };

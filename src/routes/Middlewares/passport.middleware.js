@@ -11,6 +11,7 @@ import ErrorEnums from "../../errors/error.enums.js";
 import CustomError from "../../errors/customError.class.js";
 import ErrorGenerator from "../../errors/error.info.js";
 
+// Middleware Registro:
 export const registerUser = (req, res, next) => {
     try {
         const userRegister = req.body;
@@ -51,6 +52,8 @@ export const registerUser = (req, res, next) => {
         });
     })(req, res, next);
 };
+
+// Middleware Login:
 export const loginUser = (req, res, next) => {
     try {
         const userLogin = req.body;
@@ -98,8 +101,9 @@ export const loginUser = (req, res, next) => {
         };
     })(req, res, next);
 };
+
+// Middleware GitHub:
 export const authenticateWithGitHub = (req, res, next) => {
-    console.log("hola")
     passport.authenticate('github', {
         session: false
     }, async (err, user, info) => {
@@ -120,6 +124,7 @@ export const authenticateWithGitHub = (req, res, next) => {
                 res.redirect('/products');
             } 
             else if (resultDB_GH.result.password === "Sin contraseña.") {
+                // Cookie con el ID del usuario creado mediante GitHub para que el formulario extra pueda acceder al usuario en la base de datos y actualizarlo con los datos complementarios, antes de crear el token de jwt: 
                 res.cookie(envCoderUserIDCookie, resultDB_GH.result._id, {
                     httpOnly: true,
                     signed: true,
@@ -129,6 +134,8 @@ export const authenticateWithGitHub = (req, res, next) => {
         }
     })(req, res, next);
 };
+
+// Current:
 export const getCurrentUser = (req, res) => {
     res.send(new CurrentUserDTO(req.user));
 };

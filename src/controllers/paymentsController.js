@@ -7,10 +7,17 @@ import {
     envPurchaseOrder
 } from '../config.js';
 
+// Clase para el Controller de Payments:
 export default class PaymentsController {
+
     constructor() {
+        // Instancia de PaymentsService:
         this.paymentsService = new PaymentsService();
     }
+
+    // Métodos de PaymentsController:
+
+    // Generar intento de pago - Controller:
     async newPaymentIntentController(req, res, next) {
         const uid = req.user.userID;
         const email = req.user.email;

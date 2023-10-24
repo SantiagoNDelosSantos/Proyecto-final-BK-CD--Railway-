@@ -6,8 +6,13 @@ import {
     envMongoURL
 } from "../../config.js";
 
+// Clase para el DAO de productos:
 export default class ProductsDAO {
+
+    // Conexión Mongoose:
     connection = mongoose.connect(envMongoURL);
+
+    // Crear producto - DAO:
     async createProduct(info) {
         let response = {};
         try {
@@ -20,6 +25,8 @@ export default class ProductsDAO {
         };
         return response;
     };
+
+    // Traer un producto por su ID - DAO:
     async getProductById(pid) {
         let response = {};
         try {
@@ -38,6 +45,8 @@ export default class ProductsDAO {
         };
         return response;
     };
+
+    // Traer todos los productos - DAO:
     async getAllProducts(limit = 10, page = 1, sort = 1, filtro = null, filtroVal = null) {
         let response = {};
         try {
@@ -76,6 +85,8 @@ export default class ProductsDAO {
         };
         return response;
     };
+
+    // Eliminar un producto por su ID - DAO:
     async deleteProduct(pid) {
         let response = {};
         try {
@@ -85,6 +96,7 @@ export default class ProductsDAO {
             if (result === null) {
                 response.status = "not found product";
             } else {
+                // Eliminar el producto de la colección de productos:
                 const result2 = await productsModel.deleteOne({
                     _id: pid
                 });
@@ -101,21 +113,30 @@ export default class ProductsDAO {
         };
         return response;
     };
+
+    // Eliminar todos los productos publicados por un usuario premium - DAO:
     async deleteAllPremiumProduct(uid, role) {
         let response = {};
         try {
+            // Buscar todos los productos con el campo 'owner' igual al uid del usuario indicado:
             const productsToDelete = await productsModel.find({
                 owner: uid
             });
+            // Verificar si se encontraron productos:
             if (productsToDelete.length === 0) {
                 response.status = "not found products";
             } else {
+                // Si se encontraron eliminamos los productos en la colección:
                 const result = await productsModel.deleteMany({
                     owner: uid
                 });
+                // Validamos el resultado:
                 if (result.deletedCount > 0) {
+                    // Si el role es admin tambien devolvemos el correo del usuario cuyos productos se eliminaron:
                     if (role === "admin") {
+                        //Extraemos el correo del usuario para enviarle su email de notificación, en caso de que la eliminación la solicitara el admin: 
                         const userEmail = productsToDelete[0].email;
+                        // Extreamos todos los title de los productos para que el usuario sepa que productos se eliminaron exactamente: 
                         const deletedProducts = [];
                         for (const product of productsToDelete) {
                             const title = product.title;
@@ -140,6 +161,8 @@ export default class ProductsDAO {
         }
         return response;
     };
+
+    // Actualizar un producto - DAO:
     async updateProduct(pid, updateProduct) {
         let response = {};
         try {
@@ -164,4 +187,5 @@ export default class ProductsDAO {
         };
         return response;
     };
+
 };

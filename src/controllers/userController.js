@@ -4,15 +4,24 @@ import ErrorEnums from "../errors/error.enums.js";
 import CustomError from "../errors/customError.class.js";
 import ErrorGenerator from "../errors/error.info.js";
 
+// Clase para el Controller de User:
 export default class UserController {
+
     constructor() {
         this.userService = new UserService();
     }
+
+    // Métodos para UserController: 
+
+    // Subir documentación de usuario - Controller: 
     async uploadPremiumDocsController(req, res, next) {
+        // Obtenemos el ID del usuario: 
         const uid = req.params.uid;
+        // Creamos algunas variables para almacenar las rutas definitivas:
         let rutaIdentification;
         let rutaProofOfAddres;
         let rutaBankStatement;
+        // Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
         const parteComun = 'public\\';
         if (req.files && req.files.identification) {
             const identification = req.files.identification[0].path;
@@ -32,6 +41,7 @@ export default class UserController {
             const ruta = bankStatement.substring(indice + parteComun.length);
             rutaBankStatement = ruta
         }
+        // Validamos el ID del usuario y que se haya enviado para subir, al menos 1 archivo/documento
         try {
             if (!uid || !mongoose.Types.ObjectId.isValid(uid)) {
                 CustomError.createError({
@@ -50,11 +60,14 @@ export default class UserController {
             }
         } catch (error) {
             return next(error);
-        }; 
+        };
+        // Una vez que se han extraido las rutas en sus respectivas variables, las guardamos en un arreglo que se pasara al service: 
         const documentsRuta = [rutaIdentification, rutaProofOfAddres, rutaBankStatement];
+        // Tambien creamos un arreglo para con los name que asignaremos a los documentos cuando se realice el push en el DAO:
         const documentNames = ["Identificación", "Comprobante de domicilio", "Comprobante de estado de cuenta"];
         let response = {};
         try {
+            // Enviamos al service el UID y los dos arreglos:
             const resultService = await this.userService.uploadPremiumDocsService(uid, documentsRuta, documentNames);
             response.statusCode = resultService.statusCode;
             response.message = resultService.message;
@@ -71,7 +84,10 @@ export default class UserController {
             req.logger.error(response.message);
         };
         return response;
+
     };
+
+    // Cambiar rol del usuario - Controller: 
     async changeRoleController(req, res, next) {
         const uid = req.params.uid
         const requesterRole = req.user.role;
@@ -106,6 +122,8 @@ export default class UserController {
         };
         return response;
     };
+
+    // Obtener todos los usuarios - Controller: 
     async getAllUsersController(req, res) {
         let response = {};
         try {
@@ -127,6 +145,8 @@ export default class UserController {
         };
         return response;
     };
+
+    // Eliminar usuarios inactivos (2 Días) - Controller:
     async deleteInactivityUsersController(req, res) {
         const adminRole = req.user.role;
         let response = {};
@@ -149,4 +169,5 @@ export default class UserController {
         };
         return response;
     };
+
 };

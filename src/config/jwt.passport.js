@@ -10,6 +10,8 @@ const JWTStrategy = jwt.Strategy;
 const ExtracJWT = jwt.ExtractJwt;
 
 export const initializePassportJWT = () => {
+
+     // Token user session:
     passport.use('jwt', new JWTStrategy({
         jwtFromRequest: ExtracJWT.fromExtractors([cookieExtractor]),
         secretOrKey: envCoderSecret
@@ -20,6 +22,8 @@ export const initializePassportJWT = () => {
             return done(error);
         }
     }))
+    
+    // Token Reset Password:
     passport.use('jwtResetPass', new JWTStrategy({
         jwtFromRequest: ExtracJWT.fromExtractors([queryExtractor]),
         secretOrKey: envResetPassToken
@@ -33,6 +37,7 @@ export const initializePassportJWT = () => {
 
 };
 
+// Extractor para token user session:
 const cookieExtractor = (req) => {
     let token = null;
     if (req && req.signedCookies) {
@@ -41,6 +46,7 @@ const cookieExtractor = (req) => {
     return token
 };
 
+// Extractor para Token Reset Password:
 const queryExtractor = (req) => {
     let token = null;
     if (req.query ) {

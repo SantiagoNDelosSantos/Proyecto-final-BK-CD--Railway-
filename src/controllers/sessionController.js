@@ -8,10 +8,17 @@ import {
 } from "../config.js"
 import __dirname from "../utils.js";
 
+// Clase para el Controller de session: 
 export default class SessionController {
+
+    // Constructor de SessionController: 
     constructor() {
         this.sessionService = new SessionService();
-    } 
+    }
+
+    // Métodos para SessionController: 
+
+    // Crear una session - Controller: 
     async createUserControler(req, res, info) {
         let response = {};
         try {
@@ -31,6 +38,8 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Buscar usuario - Controller:
     async getUserController(req, res, identifier) {
         if (!identifier) {
             identifier = req.user.email;
@@ -55,6 +64,8 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Actualizar Session - Controller:
     async updateUserController(req, res, next, uid, updatedUser) {
         try {
             if (!uid || !mongoose.Types.ObjectId.isValid(uid)) {
@@ -88,6 +99,8 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Enviar email para restablecer contraseña - Controller:
     async getUserAndSendEmailController(req, res, next) {
         const userEmail = req.body.email;
         try {
@@ -126,6 +139,8 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Restablecer contraseña - Controller:
     async resetPassUserController(req, res, next) {
         const userEmail = req.signedCookies[envResetPassCookieEmail]
         const newPass = req.body.newPassword
@@ -160,21 +175,20 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Editar perfil - Controller:
     async editProfileController(req, res, next) {
         const uid = req.user.userID;
         const newName = req.body.name;
         const newEmail = req.body.email;
         let rutaPhotoProfile;
-
         const parteComun = 'public\\';
         if (req.file && req.file.path) {
             const pathPhotoProfile = req.file.path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
             rutaPhotoProfile = ruta
-            console.log(rutaPhotoProfile)
         }
-
         let updateProfile = {};
         if (newName) {
             updateProfile.first_name = newName;
@@ -232,6 +246,8 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Cerrar session - Controller:
     async logoutController(req, res, next) {
         let uid;
         if (req.user.role !== "admin") {
@@ -270,6 +286,8 @@ export default class SessionController {
         };
         return response;
     };
+
+    // Eliminar cuenta - Controller:
     async deleteUserController(req, res, next) {
         const role = req.user.role;
         let uid;
@@ -309,4 +327,5 @@ export default class SessionController {
         };
         return response;
     };
+
 };

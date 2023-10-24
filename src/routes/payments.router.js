@@ -7,6 +7,8 @@ import PaymentsController from "../controllers/paymentsController.js";
 
 const paymentsRouter = Router();
 let paymentsController = new PaymentsController();
+
+// Generar intento de pago - Router:
 paymentsRouter.get('/paymentsIntents', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/invalidToken'
@@ -16,4 +18,5 @@ paymentsRouter.get('/paymentsIntents', passport.authenticate('jwt', {
         res.status(result.statusCode).send(result);
     };
 });
+
 export default paymentsRouter;

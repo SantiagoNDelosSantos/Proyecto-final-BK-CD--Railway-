@@ -9,8 +9,8 @@ import {
 } from './Middlewares/rolesView.middleware.js'
 
 const viewsRouter = Router();
+
 viewsRouter.get('/register', (req, res) => {
-    
     res.render('register', {
         title: 'Registro'
     });
@@ -38,16 +38,25 @@ viewsRouter.get('/resetPasswordView', passport.authenticate('jwtResetPass', {
         title: 'Restablecer Contraseña'
     });
 });
+
+// Esta vista en a la que se va a redirigir cuando el usuario no ha iniciado session, osea intenta acceder a una vistas sin estar logueado (Vistas):
+
 viewsRouter.get('/notLoggedIn', (req, res) => {
     res.render('notLoggedIn', {
         title: 'Acceso denegado'
     });
 });
+
+// Esta vista es para los casos donde mas alla de los roles que se requieren para determinada ruta, la validación del token es fallida por esta vencido o adulterado (No vistas):
+
 viewsRouter.get('/invalidToken', (req, res) => {
     res.render('invalidToken', {
         title: 'Acceso denegado - Token vencido'
     });
 });
+
+// Solo personas autentícadas:
+
 viewsRouter.get('/products', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -56,6 +65,7 @@ viewsRouter.get('/products', passport.authenticate('jwt', {
         title: 'Productos'
     });
 });
+
 viewsRouter.get('/chat', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -64,6 +74,7 @@ viewsRouter.get('/chat', passport.authenticate('jwt', {
         title: 'Chat'
     });
 });
+
 viewsRouter.get('/perfil', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -72,6 +83,7 @@ viewsRouter.get('/perfil', passport.authenticate('jwt', {
         title: 'Perfil'
     });
 });
+
 viewsRouter.get('/cart', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -80,6 +92,7 @@ viewsRouter.get('/cart', passport.authenticate('jwt', {
         title: 'Carrito de Compras'
     });
 });
+
 viewsRouter.get('/paySuccess', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -88,6 +101,7 @@ viewsRouter.get('/paySuccess', passport.authenticate('jwt', {
         title: 'Pago exitoso'
     });
 });
+
 viewsRouter.get('/tickets', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -96,6 +110,7 @@ viewsRouter.get('/tickets', passport.authenticate('jwt', {
         title: 'Tickets'
     });
 });
+
 viewsRouter.get('/changeRole', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -104,6 +119,9 @@ viewsRouter.get('/changeRole', passport.authenticate('jwt', {
         title: 'Cambiar Role'
     });
 });
+
+// Solo admin: 
+
 viewsRouter.get('/adminPanel', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -112,6 +130,7 @@ viewsRouter.get('/adminPanel', passport.authenticate('jwt', {
         title: 'Panel de administrador'
     });
 });
+
 viewsRouter.get('/editUserAdmin', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -120,6 +139,9 @@ viewsRouter.get('/editUserAdmin', passport.authenticate('jwt', {
         title: 'Panel de administrador - Usuarios'
     });
 });
+
+// Solo admin y premium:
+
 viewsRouter.get('/storeProducts', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
@@ -128,4 +150,5 @@ viewsRouter.get('/storeProducts', passport.authenticate('jwt', {
         title: 'Publicar productos'
     });
 });
+
 export default viewsRouter;

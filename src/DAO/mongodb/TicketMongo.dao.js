@@ -6,8 +6,13 @@ import {
     envMongoURL
 } from "../../config.js";
 
+// Clase para el DAO de tickets:
 export default class TicketDAO {
+
+    // Conexión Mongoose:
     connection = mongoose.connect(envMongoURL);
+
+    // Crear ticket - DAO: 
     async createTicket(ticketInfo) {
         let response = {}
         try {
@@ -20,6 +25,8 @@ export default class TicketDAO {
         };
         return response;
     };
+
+    // Obtener ticket por id de un usuario - DAO:
     async getTicketByID(tid) {
         let response = {}
         try {
@@ -38,4 +45,5 @@ export default class TicketDAO {
         };
         return response;
     };
+
 };

@@ -3,20 +3,25 @@ import mongoose from 'mongoose';
 import ErrorEnums from "../errors/error.enums.js";
 import CustomError from "../errors/customError.class.js";
 import ErrorGenerator from "../errors/error.info.js";
-
 import __dirname from '../utils.js'
 
+// Clase para el Controller de productos: 
 export default class ProductController {
+
     constructor() {
+        // Instancia de ProductService:
         this.productService = new ProductService();
     }
+
+    // Métodos para ProductController:
+
+    // Crear un producto - Controller:
     async createProductController(req, res, next) {
+        // Extraemos los datos string:
         const productData = req.body;
+        // Creamos algunas variables para almacenar las rutas definitivas:
         let rutaFrontImg;
         let rutaBackImg;
-        
-        // Creamos algunas variables para almacenar las rutas definitiva
-
         // Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
         const parteComun = 'public\\';
         if (req.files && req.files.frontImg) {
@@ -29,11 +34,9 @@ export default class ProductController {
             const backImg = req.files.backImg[0].path;
             const indice = backImg.indexOf(parteComun);
             const ruta = backImg.substring(indice + parteComun.length);
-            rutaBackImg = ruta
+            rutaBackImg = __dirname + ruta
         };
-
-
-
+        // Conversiones a number:
         const price = parseFloat(productData.price);
         const stock = parseFloat(productData.stock);
         try {
@@ -53,6 +56,7 @@ export default class ProductController {
         };
         let response = {};
         try {
+            // Agregamos las rutas de las imagenes al producto:
             productData.imgFront = {
                 name: "Front Img",
                 reference: `${rutaFrontImg}`
@@ -61,22 +65,27 @@ export default class ProductController {
                 name: "Back Img",
                 reference: `${rutaBackImg}`,
             };
+            // Extraemos el role del owner: 
             const ownerRole = req.user.role;
             let owner = "";
             let email = "";
             let role = ""
             if (ownerRole === "premium") {
+                // Si es premium agregamos su id a owner:
                 owner = req.user.userID;
                 role = req.user.role;
                 email = req.user.email;
             } else if (ownerRole === "admin") {
+                // Si es admin agregamos su role a owner:
                 owner = req.user.role;
                 role = req.user.role;
                 email = null;
             };
+            // Agregamos el owner a productData: 
             productData.owner = owner;
             productData.email = email;
             productData.role = role;
+            // Enviamos toda la información del producto incluyendo el owner al service: 
             const resultService = await this.productService.createProductService(productData);
             response.statusCode = resultService.statusCode;
             response.message = resultService.message;
@@ -84,6 +93,7 @@ export default class ProductController {
                 req.logger.error(response.message);
             } else if (resultService.statusCode === 200) {
                 response.result = resultService.result;
+                // Actualización Real Time:
                 const products = await this.productService.getAllProductsService();
                 req.socketServer.sockets.emit('products', products);
                 req.logger.debug(response.message);
@@ -95,6 +105,8 @@ export default class ProductController {
         };
         return response;
     };
+
+    // Traer un producto por ID - Controller:
     async getProductByIDController(req, res, next) {
         const pid = req.params.pid;
         try {
@@ -129,6 +141,8 @@ export default class ProductController {
         };
         return response;
     };
+
+    // Traer todos los productos - Controller:
     async getAllProductsController(req, res, next) {
         let limit = Number(req.limit) || 10;
         let page = Number(req.query.page) || 1;
@@ -158,6 +172,7 @@ export default class ProductController {
                 req.logger.warn(response.message);
             } else if (resultService.statusCode === 200) {
                 response.result = resultService.result;
+                // Actualización Real Time: 
                 const products = await this.productService.getAllProductsService();
                 req.socketServer.sockets.emit('products', products);
                 req.logger.debug(response.message);
@@ -169,6 +184,8 @@ export default class ProductController {
         };
         return response;
     };
+
+    // Eliminar un producto por su ID - Controller:
     async deleteProductController(req, res, next) {
         const pid = req.params.pid;
         try {
@@ -186,8 +203,11 @@ export default class ProductController {
         let response = {};
         try {
             if (req.user && req.user.role && req.user.email) {
+                // Extraemos el role peticionante: 
                 const requesterRole = req.user.role;
+                // Creamos el requester que vamos a pasar al service: 
                 const requester = requesterRole === "premium" ? req.user.email : requesterRole === "admin" ? req.user.role : undefined;
+                // Enviamos el pid y el owner al service: 
                 const resultService = await this.productService.deleteProductService(pid, requester);
                 response.statusCode = resultService.statusCode;
                 response.message = resultService.message;
@@ -197,6 +217,7 @@ export default class ProductController {
                     req.logger.warn(response.message);
                 } else if (resultService.statusCode === 200) {
                     response.result = resultService.result;
+                    // Actualización Real Time: 
                     const products = await this.productService.getAllProductsService();
                     req.socketServer.sockets.emit('products', products);
                     req.logger.debug(response.message);
@@ -209,6 +230,8 @@ export default class ProductController {
         };
         return response;
     };
+
+    // Eliminar todos los productos publicados por un usuario premium - Controller:
     async deleteAllPremiumProductController(req, res, next) {
         const uid = req.params.uid;
         const role = req.user.role;
@@ -238,6 +261,7 @@ export default class ProductController {
             } else if (resultService.statusCode === 404 || resultService.statusCode === 403) {
                 req.logger.warn(response.message);
             } else if (resultService.statusCode === 200) {
+                // Actualización Real Time: 
                 const products = await this.productService.getAllProductsService();
                 req.socketServer.sockets.emit('products', products);
                 req.logger.debug(response.message);
@@ -249,24 +273,30 @@ export default class ProductController {
         };
         return response;
     }
+
+    // Actualizar un producto - Controller: 
     async updatedProductController(req, res, next) {
         const pid = req.params.pid;
+        // Recibimos la información para actualizar: 
         const updatedFields = req.body;
+        // Creamos algunas variables para almacenar las rutas definitivas:
         let rutaFrontImg;
         let rutaBackImg;
+        // Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
         const parteComun = 'public\\';
         if (req.files && req.files.frontImg) {
             const frontImg = req.files.frontImg[0].path;
             const indice = frontImg.indexOf(parteComun);
             const ruta = frontImg.substring(indice + parteComun.length);
-            rutaFrontImg = ruta
+            rutaFrontImg = __dirname + ruta
         };
         if (req.files && req.files.backImg) {
             const backImg = req.files.backImg[0].path;
             const indice = backImg.indexOf(parteComun);
             const ruta = backImg.substring(indice + parteComun.length);
-            rutaBackImg = ruta
+            rutaBackImg = __dirname + ruta
         };
+        // Conversiones a number:
         parseFloat(updatedFields.price);
         parseFloat(updatedFields.stock);
         try {
@@ -291,6 +321,7 @@ export default class ProductController {
         };
         let response = {};
         try {
+            // Agregamos las rutas de las nuevas imagenes al producto si las hay:
             if (rutaFrontImg) {
                 updatedFields.imgFront = {
                     name: "Front Img",
@@ -303,8 +334,11 @@ export default class ProductController {
                     reference: `${rutaBackImg}`,
                 };
             };
+            // Extraemos el role del owner: 
             const ownerRole = req.user.role;
+            // Creamos el owner que vamos a pasar al service: 
             const owner = ownerRole === "premium" ? req.user.userID : ownerRole === "admin" ? req.user.role : undefined;
+            // Enviamos el pid, el cuerpo para el update y el owner al service: 
             const resultService = await this.productService.updateProductService(pid, updatedFields, owner);
             response.statusCode = resultService.statusCode;
             response.message = resultService.message;
@@ -314,6 +348,7 @@ export default class ProductController {
                 req.logger.warn(response.message);
             } else if (resultService.statusCode === 200) {
                 response.result = resultService.result;
+                // Actualización Real Time: 
                 const products = await this.productService.getAllProductsService();
                 req.socketServer.sockets.emit('products', products);
                 req.logger.debug(response.message);
@@ -325,4 +360,5 @@ export default class ProductController {
         };
         return response;
     };
+
 };

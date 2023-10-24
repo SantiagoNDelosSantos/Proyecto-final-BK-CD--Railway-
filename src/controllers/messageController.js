@@ -4,10 +4,17 @@ import ErrorEnums from "../errors/error.enums.js";
 import CustomError from "../errors/customError.class.js";
 import ErrorGenerator from "../errors/error.info.js";
 
+// Clase para el Controller de mensajes: 
 export default class MessageController {
+
     constructor() {
+        // Instancia de MessageService: 
         this.messageService = new MessageService();
     }
+
+    // Métodos para MessageController:
+
+    // Crear un mensaje - Controler :
     async createMessageController(req, res, next) {
         const messageData = req.body;
         try {
@@ -30,6 +37,7 @@ export default class MessageController {
             if (resultService.statusCode === 500) {
                 req.logger.error(response.message);
             } else if (resultService.statusCode === 200) {
+                // Actualización Real Time:
                 const messages = await this.messageService.getAllMessageService();
                 req.socketServer.sockets.emit('messages', messages)
                 req.logger.debug(response.message);
@@ -41,6 +49,8 @@ export default class MessageController {
         };
         return response;
     };
+
+    // Traer todos los mensajes - Controller: 
     async getAllMessageController(req, res) {
         let response = {};
         try {
@@ -52,6 +62,7 @@ export default class MessageController {
             } else if (resultService.statusCode === 404) {
                 req.logger.warn(response.message);
             } else if (resultService.statusCode === 200) {
+                // Actualización Real Time:
                 const messages = await this.messageService.getAllMessageService();
                 req.socketServer.sockets.emit('messages', messages);
                 response.result = resultService.result;
@@ -64,6 +75,8 @@ export default class MessageController {
         };
         return response;
     };
+
+    // Borrar un mensaje - Controller: 
     async deleteMessageController(req, res, next) {
         const mid = req.params.mid;
         const uid = req.user.userID;
@@ -96,6 +109,7 @@ export default class MessageController {
             } else if (resultService.statusCode === 404 || resultService.statusCode === 403) {
                 req.logger.warn(response.message);
             } else if (resultService.statusCode === 200) {
+                // Actualización Real Time:
                 const messages = await this.messageService.getAllMessageService();
                 req.socketServer.sockets.emit('messages', messages);
                 req.logger.debug(response.message);
@@ -107,4 +121,5 @@ export default class MessageController {
         };
         return response;
     };
+
 };
