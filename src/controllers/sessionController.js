@@ -164,12 +164,13 @@ export default class SessionController {
         const newName = req.body.name;
         const newEmail = req.body.email;
         let rutaPhotoProfile;
+
         const parteComun = 'public\\';
         if (req.file && req.file.path) {
             const pathPhotoProfile = req.file.path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
-            rutaPhotoProfile = `${ruta}`
+            rutaPhotoProfile = ruta
         }
         let updateProfile = {};
         if (newName) {
