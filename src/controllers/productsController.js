@@ -14,17 +14,16 @@ export default class ProductController {
         let rutaBackImg;
         if (req.files && req.files.frontImg) {
             const frontImg = req.files.frontImg[0].path;
-            const indice = frontImg.indexOf('public/src/');
-            const ruta = frontImg.substring(indice + 10); // 10 es la longitud de 'public/src/'
-            rutaFrontImg = ruta;
+            const rutaFrontImg = frontImg.replace('public/src/', ''); // Elimina 'public/src/' de la ruta
+            rutaFrontImg = rutaFrontImg.replace(/ /g, '%20'); // Reemplaza espacios con %20
         }
         
         if (req.files && req.files.backImg) {
             const backImg = req.files.backImg[0].path;
-            const indice = backImg.indexOf('public/src/');
-            const ruta = backImg.substring(indice + 10);
-            rutaBackImg = ruta;
+            const rutaBackImg = backImg.replace('public/src/', ''); // Elimina 'public/src/' de la ruta
+            rutaBackImg = rutaBackImg.replace(/ /g, '%20'); // Reemplaza espacios con %20
         }
+        
         
         const price = parseFloat(productData.price);
         const stock = parseFloat(productData.stock);
