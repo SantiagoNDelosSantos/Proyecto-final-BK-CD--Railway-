@@ -171,6 +171,12 @@ export default class SessionController {
 
         const parteComun = 'public\\';
 
+        response.result = req.file
+        response.statusCode = resultService.statusCode;
+        response.message = resultService.message;
+
+        return response
+
         if (req.file && req.file.photo) {
             const pathPhotoProfile = req.file.photo[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
@@ -236,6 +242,7 @@ export default class SessionController {
         };
         return response;
     };
+
     async logoutController(req, res, next) {
         let uid;
         if (req.user.role !== "admin") {
