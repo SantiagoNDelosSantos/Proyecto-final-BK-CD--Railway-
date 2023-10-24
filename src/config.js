@@ -31,6 +31,8 @@ export const envUrlResetPass = process.env.URL_REST_PASS;
 export const envStripeKeyPublic = process.env.STRIPE_KEY_PUBLIC;
 export const envStripeKeySecret = process.env.STIRPE_KEY_SECRET;
 export const envPurchaseOrder = process.env.PURCHASE_ORDER;
+export const envSuccess_url = process.env.SUCCESS_URL;
+export const envCancel_url = process.env.CANCEL_URL;
 
 console.log(program.opts())
 

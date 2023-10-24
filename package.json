@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
+    "start": "node src/server.js",
     "dev": "nodemon src/config.js --mode dev --exec \"nodemon src/server.js\"",
     "prod": "nodemon src/config.js --mode prod --exec \"nodemon src/server.js\"",
     "test": "mocha src/test/supertest.js"

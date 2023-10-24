@@ -1,7 +1,9 @@
 import Stripe from 'stripe';
 import {
     envStripeKeySecret,
-    envStripeKeyPublic
+    envStripeKeyPublic,
+    envSuccess_url,
+    envCancel_url
 } from '../config.js';
 
 export default class PaymentsService {
@@ -28,8 +30,8 @@ export default class PaymentsService {
                     uid: uid,
                     email: email
                 },
-                success_url: 'http://localhost:8080/paySuccess',
-                cancel_url: 'http://localhost:8080/cart',
+                success_url: `${envSuccess_url}`,
+                cancel_url: `${envCancel_url}`,
             })
             if (paymentIntent.url) {
                 response.statusCode = 200;
