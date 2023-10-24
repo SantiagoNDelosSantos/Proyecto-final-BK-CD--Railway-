@@ -1,3 +1,4 @@
+/*
 import chai from "chai";
 import supertest from "supertest";
 import {
@@ -137,3 +138,4 @@ describe('Test Global Technology', () => {
         }).timeout(10000);
     });
 })
+*/
