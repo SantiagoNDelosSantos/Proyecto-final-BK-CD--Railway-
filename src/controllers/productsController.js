@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import ErrorEnums from "../errors/error.enums.js";
 import CustomError from "../errors/customError.class.js";
 import ErrorGenerator from "../errors/error.info.js";
+import {__dirname} from "../utils.js";
 
 export default class ProductController {
     constructor() {
@@ -16,7 +17,7 @@ export default class ProductController {
         // Creamos algunas variables para almacenar las rutas definitiva
 
         // Validamos que archivos se han subido y extreamos las rutas de estos archivos en variables:
-        const parteComun = 'public\\imgs';
+        const parteComun = 'public\\';
         if (req.files && req.files.frontImg) {
 
             const frontImg = req.files.frontImg[0].path;
@@ -25,7 +26,7 @@ export default class ProductController {
             console.log(indice)
             const ruta = frontImg.substring(indice + parteComun.length);
             console.log(ruta)
-            rutaFrontImg = ruta
+            rutaFrontImg = __dirname + ruta
         };
         if (req.files && req.files.backImg) {
             const backImg = req.files.backImg[0].path;
