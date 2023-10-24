@@ -65,6 +65,8 @@ function allProducts() {
             <th>+ Cart</th>
         </tr>
       </thead>`;
+
+      
       productsResponse.result.docs.forEach((product) => {
         htmlProductos += `
           <tr>
