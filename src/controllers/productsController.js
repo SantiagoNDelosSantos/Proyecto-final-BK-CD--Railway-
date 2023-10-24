@@ -12,8 +12,8 @@ export default class ProductController {
         const productData = req.body;
         let rutaFrontImg;
         let rutaBackImg;
-console.log(req.files.imgFront)
-console.log(req.files.imgBack)
+console.log(req.files.frontImg[0].path)
+console.log(req.files.backImg[0].path)
 
         if (req.files && req.files.frontImg) {
             const frontImg = req.files.frontImg[0].path;
