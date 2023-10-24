@@ -27,7 +27,6 @@ export const envAuthUserTransport = process.env.AUTH_USER_TRANSPORT;
 export const envAuthPassTransport = process.env.AUTH_PASS_TRANSPORT;
 export const envResetPassToken = process.env.RESET_PASSWORD_TOKEN;
 export const envResetPassCookieEmail = process.env.RESET_PASSWORD_COOKIE; 
-export const envUrlResetPass = process.env.URL_REST_PASS;
 export const envStripeKeyPublic = process.env.STRIPE_KEY_PUBLIC;
 export const envStripeKeySecret = process.env.STIRPE_KEY_SECRET;
 export const envPurchaseOrder = process.env.PURCHASE_ORDER;

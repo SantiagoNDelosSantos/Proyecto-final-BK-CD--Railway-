@@ -10,8 +10,7 @@ import {
 import {
     envResetPassToken,
     envCoderTokenCookie,
-    envCoderSecret,
-    envUrlResetPass
+    envCoderSecret
 } from '../config.js'
 
 export default class SessionService {
