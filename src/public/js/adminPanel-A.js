@@ -48,6 +48,7 @@ async function saludoYAccesoPrem() {
 saludoYAccesoPrem();
 const tableProd = document.getElementById('tableProd');
 let totalDocs;
+
 function allProducts() {
     socket.on("products", (productsResponse) => {
         if (productsResponse.statusCode === 200) {
@@ -88,8 +89,8 @@ function allProducts() {
                     </div> `
                 }
 
-                var imgFrontPath = product.imgFront.reference;
-var imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
+                let imgFrontPath = product.imgFront.reference;
+                let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
 
 
                 htmlProductos += `
@@ -187,7 +188,7 @@ async function deleteUserPid(pid, title) {
             let invalidTokenURL = deleteResponse.url;
             window.location.replace(invalidTokenURL);
         };
-        const deleteRes = await deleteResponse.json(); 
+        const deleteRes = await deleteResponse.json();
         if (deleteRes.statusCode === 401) {
             Swal.fire({
                 title: deleteRes.h1,
@@ -260,7 +261,7 @@ async function logoutF() {
             setTimeout(() => {
                 window.location.replace('/login');
             }, 2000);
-        }  else if (statusCode === 500) {
+        } else if (statusCode === 500) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error al intentar cerrar session',
@@ -275,6 +276,7 @@ let page;
 let sort;
 let filtro;
 let filtroVal;
+
 function filtrarProducts(limit, page, sort, filtro, filtroVal) {
     const busquedaProducts = {
         limit: limit || 10,
@@ -346,6 +348,7 @@ limpiarFiltros.addEventListener('click', () => {
     filtroVal = null;
     filtrarProducts(limit, page, sort, filtro, filtroVal);
 });
+
 function cambiarPagina(currentPage, newPage) {
     let newCurrentPage;
     if (newPage === "prev") {
@@ -358,6 +361,7 @@ function cambiarPagina(currentPage, newPage) {
 };
 const carga = document.getElementById("VistaDeCarga");
 const vista = document.getElementById("contenedorVista");
+
 function pantallaCarga() {
     setTimeout(() => {
         carga.style = "display: none";

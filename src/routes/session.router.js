@@ -96,6 +96,7 @@ sessionRouter.post('/logout', passport.authenticate('jwt', {
     failureRedirect: '/invalidToken'
 }), rolesRMiddlewarePublic, async (req, res, next) => {
     const result = await sessionController.logoutController(req, res, next);
+    return result
     if (result !== undefined) {
         res.status(result.statusCode).send(result);
     };
