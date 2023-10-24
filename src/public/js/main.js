@@ -48,6 +48,7 @@ async function saludoYAccesoPrem() {
 saludoYAccesoPrem();
 const tableProd = document.getElementById('tableProd');
 let totalDocs;
+
 function allProducts() {
   socket.on("products", (productsResponse) => {
     if (productsResponse.statusCode === 200) {
@@ -66,13 +67,14 @@ function allProducts() {
         </tr>
       </thead>`;
 
-      let imgFrontPath = product.imgFront.reference;
-      let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
-
-      let imgBacktPath = product.imgBack.reference;
-      let imgBackPathAfterImgs = imgBacktPath.substring(imgBacktPath.indexOf("/imgs"));
-
       productsResponse.result.docs.forEach((product) => {
+
+        let imgFrontPath = product.imgFront.reference;
+        let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
+
+        let imgBacktPath = product.imgBack.reference;
+        let imgBackPathAfterImgs = imgBacktPath.substring(imgBacktPath.indexOf("/imgs"));
+
         htmlProductos += `
           <tr>
             <td id="${product.title}">${product.title}</td>
@@ -97,7 +99,7 @@ function allProducts() {
           const quantity = cantidadInput.value;
           addToCart(product._id, title, quantity);
         });
-      }); 
+      });
       totalDocs = productsResponse.result.totalDocs;
       const Pags = document.getElementById('Pags');
       const hasPrevPage = productsResponse.result.hasPrevPage;
@@ -224,6 +226,7 @@ let page;
 let sort;
 let filtro;
 let filtroVal;
+
 function filtrarProducts(limit, page, sort, filtro, filtroVal) {
   const busquedaProducts = {
     limit: limit || 10,
@@ -283,6 +286,7 @@ limpiarFiltros.addEventListener('click', () => {
   filtroVal = null;
   filtrarProducts(limit, page, sort, filtro, filtroVal);
 });
+
 function cambiarPagina(currentPage, newPage) {
   let newCurrentPage;
   if (newPage === "prev") {
@@ -295,6 +299,7 @@ function cambiarPagina(currentPage, newPage) {
 };
 const carga = document.getElementById("VistaDeCarga");
 const vista = document.getElementById("contenedorVista");
+
 function pantallaCarga() {
   setTimeout(() => {
     carga.style = "display: none";
