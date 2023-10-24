@@ -87,11 +87,16 @@ function allProducts() {
                         </div>
                     </div> `
                 }
+
+                var imgFrontPath = product.imgFront.reference;
+var imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
+
+
                 htmlProductos += `
                 <tr>
                     <td id="${product.title}">${product.title}</td>
                     <td class="description">${product.description}</td>
-                    <td><img src="${product.imgFront.reference}" alt="${product.title}" class="Imgs"></td>
+                    <td><img src="${imgFrontPathAfterImgs}" alt="${product.title}" class="Imgs"></td>
                     <td><img src="${product.imgBack.reference}" alt="${product.title}" class="Imgs"></td>
                     <td>${product.stock} Und.</td>
                     <td>$${product.price}</td>
