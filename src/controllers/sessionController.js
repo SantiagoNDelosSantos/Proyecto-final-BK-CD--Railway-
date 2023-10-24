@@ -170,13 +170,7 @@ export default class SessionController {
         let rutaPhotoProfile;
 
         const parteComun = 'public\\';
-
-        response.result = req.file
-        response.statusCode = 200;
-        response.message = "a ver";
-
-        return response
-
+        
         if (req.file && req.file.photo) {
             const pathPhotoProfile = req.file.photo[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
