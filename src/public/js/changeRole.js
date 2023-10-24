@@ -1,4 +1,3 @@
-const form = document.getElementById('uploadDocuments');
 async function cargaChageRole() {
     try {
         const response = await fetch('/api/sessions/getDocsUser', {
@@ -62,6 +61,7 @@ async function cargaChageRole() {
     };
 };
 cargaChageRole();
+
 function extractFileNameWithUID(url) {
     const match = url.match(/[-\w]+\s*-\s*(.+)/);
     if (match) {
@@ -97,7 +97,31 @@ async function cargarDocuments() {
         } else {
             try {
                 let uid = sessionRes.userId;
+
                 const formDocs = new FormData(form);
+
+                // Luego, agregamos la imagen solo si se ha seleccionado un archivo.
+                const identification = document.querySelector('input[name="identification"]');
+
+                if (identification.files.length > 0) {
+                    const identificationFile = identification.files[0];
+                    formDocs.append('identification', identificationFile);
+                }
+
+                const proofOfAddress = document.querySelector('input[name="proofOfAddress"]');
+
+                if (proofOfAddress.files.length > 0) {
+                    const proofOfAddressFile = proofOfAddress.files[0];
+                    formDocs.append('proofOfAddress', proofOfAddressFile);
+                }
+
+                const bankStatement = document.querySelector('input[name="bankStatement"]');
+
+                if (bankStatement.files.length > 0) {
+                    const bankStatementFile = bankStatement.files[0];
+                    formDocs.append('bankStatement', bankStatementFile);
+                }
+
                 const uploadDocsRes = await fetch(`/api/users/${uid}/documents`, {
                     method: 'POST',
                     body: formDocs
@@ -279,6 +303,7 @@ async function cambiarRole(uid) {
 };
 const carga = document.getElementById("VistaDeCarga");
 const vista = document.getElementById("contenedorVista");
+
 function pantallaCarga() {
     setTimeout(() => {
         carga.style = "display: none";

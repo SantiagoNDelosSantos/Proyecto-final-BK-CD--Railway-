@@ -217,8 +217,6 @@ async function confirmarCambios() {
         formEditProfileData.append('profile', profileFile);
     }
 
-    (console.log(formEditProfileData))
-
     try {
         const response = await fetch('/api/sessions/editProfile', {
             method: 'POST',
