@@ -12,7 +12,7 @@ export default class ProductController {
         const productData = req.body;
         let rutaFrontImg;
         let rutaBackImg;
-        const parteComun = 'public\\';
+        const parteComun = 'public/src/';
         if (req.files && req.files.frontImg) {
             const frontImg = req.files.frontImg[0].path;
             const indice = frontImg.indexOf(parteComun);
