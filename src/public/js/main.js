@@ -66,14 +66,19 @@ function allProducts() {
         </tr>
       </thead>`;
 
-      
+      let imgFrontPath = product.imgFront.reference;
+      let imgFrontPathAfterImgs = imgFrontPath.substring(imgFrontPath.indexOf("/imgs"));
+
+      let imgBacktPath = product.imgBack.reference;
+      let imgBackPathAfterImgs = imgBacktPath.substring(imgBacktPath.indexOf("/imgs"));
+
       productsResponse.result.docs.forEach((product) => {
         htmlProductos += `
           <tr>
             <td id="${product.title}">${product.title}</td>
             <td class="description">${product.description}</td>
-            <td><img src="${product.imgFront.reference}" alt="${product.title}" class="Imgs"></td>
-            <td><img src="${product.imgBack.reference}" alt="${product.title}" class="Imgs"></td>
+            <td><img src="${imgFrontPathAfterImgs}" alt="${product.title}" class="Imgs"></td>
+            <td><img src="${imgBackPathAfterImgs}" alt="${product.title}" class="Imgs"></td>
             <td>${product.stock} Und.</td>
             <td>$${product.price}</td>
             <td><input type="number" id="cantidadInput${product._id}" min="1" max="${product.stock}" value="1"></td>
