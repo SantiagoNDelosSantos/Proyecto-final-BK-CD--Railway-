@@ -6,6 +6,7 @@ import ErrorGenerator from "../errors/error.info.js";
 import {
     envResetPassCookieEmail
 } from "../config.js"
+import __dirname from "../utils.js";
 
 export default class SessionController {
     constructor() {
@@ -164,13 +165,15 @@ export default class SessionController {
         const newName = req.body.name;
         const newEmail = req.body.email;
         let rutaPhotoProfile;
+
         const parteComun = 'public\\';
         if (req.file && req.file.path) {
-            const pathPhotoProfile = req.file.path;
+            const pathPhotoProfile = req.file[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
             const ruta = pathPhotoProfile.substring(indice + parteComun.length);
-            rutaPhotoProfile = `${ruta}`
+            rutaPhotoProfile = __dirname + ruta
         }
+
         let updateProfile = {};
         if (newName) {
             updateProfile.first_name = newName;
