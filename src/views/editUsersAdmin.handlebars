@@ -1,0 +1,36 @@
+<div id="VistaDeCarga" style="display: block" ;>
+    <div class="loader-container">
+        <div class="item">
+            <div class="divLogoChat">
+                <img src="https://i.ibb.co/hd9vsgK/Logo-BK-Grande.png" alt="Logo-BK-Grande" border="0"
+                    class="logoGRDChat" style="width: 50%; margin-bottom: 1em;">
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.ibb.co/Ytn1ggx/Pantalla-de-carga.png" alt="Pantalla-de-carga" border="0"
+                style="width: 50%;">
+        </div>
+        <div class="item" style="margin-top: 1em;">
+            <div class="loader"></div>
+        </div>
+        <div class="item" style="margin-top: 1em;">
+            <h1 style="font-size: 1.1em">Cargando... Por favor, espera.</h1>
+        </div>
+    </div>
+</div>
+<div id="contenedorVista" style=" display: none">
+    <div class="container">
+        <a id="volverStore" href='/adminPanel'><img src="https://i.ibb.co/mHPj0kW/Logo-volver-removebg-preview.png"
+                alt="volver" border="0" class="logoS" style="position: absolute; margin-top: 2em;"></a>
+        <div class="divLogoChat">
+            <img src="https://i.ibb.co/hd9vsgK/Logo-BK-Grande.png" alt="Logo-BK-Grande" border="0" class="logoGRDChat">
+        </div>
+        <h1 style="position: absolute; margin-left: 24.7vw;">Usuarios registrados</h1>
+        <table id="yoursUsersTable" class="table" >
+            <thead id="headTable"></thead>
+            <tbody id="tableUsers"></tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/editUserAdmin.js" type="module"></script>

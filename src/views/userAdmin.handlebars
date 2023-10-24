@@ -1,0 +1,64 @@
+<div id="VistaDeCarga" style="display: block" ;>
+    <div class="loader-container">
+        <div class="item">
+            <div class="divLogoChat">
+                <img src="https://i.ibb.co/hd9vsgK/Logo-BK-Grande.png" alt="Logo-BK-Grande" border="0"
+                    class="logoGRDChat" style="width: 50%; margin-bottom: 1em;">
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.ibb.co/Ytn1ggx/Pantalla-de-carga.png" alt="Pantalla-de-carga" border="0"
+                style="width: 50%;">
+        </div>
+        <div class="item" style="margin-top: 1em;">
+            <div class="loader"></div>
+        </div>
+        <div class="item" style="margin-top: 1em;">
+            <h1 style="font-size: 1.1em">Cargando... Por favor, espera.</h1>
+        </div>
+    </div>
+</div>
+<div id="contenedorVista" style=" display: none">
+    <div class="container">
+        <div class="logoSession">
+            <div>
+                <a href="/adminPanel"><img src="https://i.ibb.co/hd9vsgK/Logo-BK-Grande.png" alt="Logo-BK-Grande"
+                        border="0" class="logoGRD"></a>
+            </div>
+            <div style="display: flex;">
+                <a href="/editUserAdmin"><img src="https://i.ibb.co/Kxb8GDb/login.png" alt="login" border="0"
+                        class="logoS"></a>
+                <div id="storeButtonPrem"></div>
+                <a href="https://dashboard.stripe.com/test/dashboard">
+                    <img src="https://i.ibb.co/BzDFQyK/stipe-removebg-preview.png" alt="stripe" border="0"
+                        class="logoS">
+                </a>
+                <img id="logoutAdmin" src="https://i.ibb.co/FmxYWrr/Captura-de-pantalla-2023-10-23-184006.png" alt="logout" border="0"  class="logoS" style=" max-width: 4em; height: auto;">
+            </div>
+        </div>
+        <div
+            style="display: flex; flex-direction: row; justify-content: center; margin-top: 0.6em; margin-bottom: 1em;">
+            <div style="display: flex; flex-direction: row; justify-content: center; gap: 0.5em; padding: 0.3em;">
+                <button id="All" class="botonB">Todas las categorías</button>
+                <button id="soloUsers" class="botonB">Productos usuarios</button>
+                <button id="soloAdmin" class="botonB">Productos admin</button>
+                <button id="Laptop" class="botonB">Laptops</button>
+                <button id="Celular" class="botonB">Celulares</button>
+                <button id="Monitor" class="botonB">Monitores</button>
+                <button id="MenorPre" class="botonB">Menor precio</button>
+                <button id="MayorPre" class="botonB">Mayor precio</button>
+                <input type="number" id="limit" class="botonB"
+                    style="display: flex; justify-content: center; align-items: center; height: 3em;  margin: 0em 0em; width: 6.5em;"
+                    placeholder="Mostrar" />
+                <button id="Limpiar" class="botonB">Limpiar filtros</button>
+            </div>
+        </div>
+        <h1>Todos los productos publicados</h1>
+        <table id="tableProd" class="table">
+        </table>
+        <div id="Pags"></div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/adminPanel-A.js" type="module"></script>

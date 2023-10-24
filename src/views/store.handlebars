@@ -1,0 +1,146 @@
+<div id="VistaDeCarga" style="display: block" ;>
+    <div class="loader-container">
+        <div class="item">
+            <div class="divLogoChat">
+                <img src="https://i.ibb.co/hd9vsgK/Logo-BK-Grande.png" alt="Logo-BK-Grande" border="0"
+                    class="logoGRDChat" style="width: 50%; margin-bottom: 1em;">
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.ibb.co/Ytn1ggx/Pantalla-de-carga.png" alt="Pantalla-de-carga" border="0"
+                style="width: 50%;">
+        </div>
+        <div class="item" style="margin-top: 1em;">
+            <div class="loader"></div>
+        </div>
+        <div class="item" style="margin-top: 1em;">
+            <h1 style="font-size: 1.1em">Cargando... Por favor, espera.</h1>
+        </div>
+    </div>
+</div>
+<div id="contenedorVista" style=" display: none">
+    <div class="container">
+        <a id="volverStore" href="/products"><img src="https://i.ibb.co/mHPj0kW/Logo-volver-removebg-preview.png"
+                alt="volver" border="0" class="logoS" style="position: absolute; margin-top: 2em;"></a>
+        <div class="divLogoChat">
+            <img src="https://i.ibb.co/hd9vsgK/Logo-BK-Grande.png" alt="Logo-BK-Grande" border="0" class="logoGRDChat">
+        </div>
+        <h1>Publicar productos</h1>
+        <div
+            style="border: 1px solid rgb(206, 206, 206); padding-top: 0.7em; padding-bottom: 0.5em; padding-left: 0.5em; border-radius: 1em; margin-top: 2em;">
+            <table class="table" style="margin-top: 0px;">
+                <thead style="margin: 0em; padding: 0em;">
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Descripción</th>
+                        <th>Code</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Categoría</th>
+                        <th>Img Front</th>
+                        <th>Img Back</th>
+                        <th style="background: white; border-bottom: 2px solid white; padding: 0em 0.5em;">
+                            <button id="vaciarCamposBtn" class="boton"
+                                style="height: 4.2em; margin-left: 1em; margin-bottom: -0.1em; width: 7em;">VACIAR
+                                CAMPOS</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <form>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <input style="width: 100%; height: 4em;" type="text" name="model" placeholder="Modelo">
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <input style="width: 100%; height: 4em;" type="text" name="description"
+                                    placeholder="Descripción">
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <input style="width: 100%; height: 4em;" type="text" name="code" placeholder="Code">
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <input style="width: 100%; height: 4em;" type="number" name="price"
+                                    placeholder="Precio">
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <input style="width: 100%; height: 4em;" type="number" name="stock" placeholder="Stock">
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <input style="width: 100%; height: 4em;" type="text" name="category"
+                                    placeholder="Categoría">
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <div
+                                    style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                                    <input type="file" id="imgFront" name="imgFront" style="display: none;">
+                                    <label for="imgFront"
+                                        style="padding: 10px; width: %100; font-family: 'Montserrat'; background-color: #bfe4fd; color: #002877; cursor: pointer; border-radius: 1em; border: none;">
+                                        <span id="nombreArchivo1">Vista frontal</span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td
+                                style="width: 11em; padding: 0em; padding-top: 0.9em; border-bottom: 0px solid #d9d9d9; margin-bottom: -1em;">
+                                <div
+                                    style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                                    <input type="file" id="imgBack" name="imgBack" style="display: none;">
+                                    <label for="imgBack"
+                                        style="padding: 10px; width: %100; font-family: 'Montserrat'; background-color: #bfe4fd; color: #002877; cursor: pointer; border-radius: 1em; border: none;">
+                                        <span id="nombreArchivo2">Vista posterior</span>
+                                    </label>
+                                </div>
+                            </td>
+                        </form>
+                        <td style="padding: 0em; border-bottom: 0px solid white;">
+                            <button id="publicarBtn" class="boton"
+                                style="height: 3.73em; margin-top: 0.9em; margin-left: 1em; margin-bottom: 0.1em; width: 7em;">PUBLICAR</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="tusProductos">
+            <h1 style="margin-top: 1em;">Tu inventario de productos</h1>
+            <table id="yourProductsTable" class="table"></table>
+        </div>
+        <div id="Pags"></div>
+    </div>
+</div>
+<script>
+    const archivoInputFront = document.getElementById('imgFront');
+    const archivoInputBack = document.getElementById('imgBack');
+    const nombreArchivo1 = document.getElementById('nombreArchivo1');
+    const nombreArchivo2 = document.getElementById('nombreArchivo2');
+    archivoInputFront.addEventListener('change', () => {
+        const archivos = archivoInputFront.files;
+        nombreArchivo1.textContent = archivos[0].name;
+    })
+    archivoInputBack.addEventListener('change', () => {
+        const archivos = archivoInputBack.files;
+        nombreArchivo2.textContent = archivos[0].name;
+    })
+    function changeSpanEdit() {
+        const editarInputFront = document.getElementById('editImgFront');
+        const editarInputBack = document.getElementById('editImgBack');
+        const nombreArchivo3 = document.getElementById('nombreArchivo3');
+        const nombreArchivo4 = document.getElementById('nombreArchivo4');
+        editarInputFront.addEventListener('change', () => {
+            const archivos = editarInputFront.files;
+            nombreArchivo3.textContent = archivos[0].name;
+        })
+        editarInputBack.addEventListener('change', () => {
+            const archivos = editarInputBack.files;
+            nombreArchivo4.textContent = archivos[0].name;
+        })
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/store.js" type="module"></script>
