@@ -171,10 +171,12 @@ export default class SessionController {
 
         const parteComun = 'public\\';
 
-        if (req.file && req.file) {
-            response.statusCode = 200;
-            response.message = req.file.photo
+ response.statusCode = 200;
+            response.message = (req.file.photo + "hola" + req.file + "chau" + req.file.photo[0].path)
             return response
+
+        if (req.file && req.file) {
+           
 
             const pathPhotoProfile = req.file.photo[0].path;
             const indice = pathPhotoProfile.indexOf(parteComun);
