@@ -98,7 +98,7 @@ async function cargarDocuments() {
             try {
                 let uid = sessionRes.userId;
 
-                const formDocs = new FormData(form);
+                const formDocs = new FormData();
 
                 // Luego, agregamos la imagen solo si se ha seleccionado un archivo.
                 const identification = document.querySelector('input[name="identification"]');
