@@ -12,19 +12,20 @@ export default class ProductController {
         const productData = req.body;
         let rutaFrontImg;
         let rutaBackImg;
-        const parteComun = 'public/src/';
         if (req.files && req.files.frontImg) {
             const frontImg = req.files.frontImg[0].path;
-            const indice = frontImg.indexOf(parteComun);
-            const ruta = frontImg.substring(indice + parteComun.length);
-            rutaFrontImg = ruta
-        };
+            const indice = frontImg.indexOf('public/src/');
+            const ruta = frontImg.substring(indice + 10); // 10 es la longitud de 'public/src/'
+            rutaFrontImg = ruta;
+        }
+        
         if (req.files && req.files.backImg) {
             const backImg = req.files.backImg[0].path;
-            const indice = backImg.indexOf(parteComun);
-            const ruta = backImg.substring(indice + parteComun.length);
-            rutaBackImg = ruta
-        };
+            const indice = backImg.indexOf('public/src/');
+            const ruta = backImg.substring(indice + 10);
+            rutaBackImg = ruta;
+        }
+        
         const price = parseFloat(productData.price);
         const stock = parseFloat(productData.stock);
         try {
