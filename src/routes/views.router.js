@@ -51,7 +51,7 @@ viewsRouter.get('/invalidToken', (req, res) => {
 viewsRouter.get('/products', passport.authenticate('jwt', {
     session: false,
     failureRedirect: '/notLoggedIn'
-}), rolesVMiddlewareUsers, (req, res) => {
+}), (req, res) => {
     res.render('products', {
         title: 'Productos'
     });
