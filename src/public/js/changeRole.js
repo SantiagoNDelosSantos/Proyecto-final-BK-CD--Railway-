@@ -100,26 +100,18 @@ async function cargarDocuments() {
 
                 const formDocs = new FormData();
 
-                // Luego, agregamos la imagen solo si se ha seleccionado un archivo.
+                // Añadir archivos al FormData
                 const identification = document.querySelector('input[name="identification"]');
-
-                if (identification.files.length > 0) {
-                    const identificationFile = identification.files[0];
-                    formDocs.append('identification', identificationFile);
-                }
-
                 const proofOfAddress = document.querySelector('input[name="proofOfAddress"]');
-
-                if (proofOfAddress.files.length > 0) {
-                    const proofOfAddressFile = proofOfAddress.files[0];
-                    formDocs.append('proofOfAddress', proofOfAddressFile);
-                }
-
                 const bankStatement = document.querySelector('input[name="bankStatement"]');
 
-                if (bankStatement.files.length > 0) {
-                    const bankStatementFile = bankStatement.files[0];
-                    formDocs.append('bankStatement', bankStatementFile);
+                for (const fileInput of [identification, proofOfAddress, bankStatement]) {
+                    if (fileInput.files.length > 0) {
+                        for (const file of fileInput.files) {
+                            // Agregar archivos al FormData bajo el mismo nombre para permitir la subida múltiple
+                            formDocs.append(fileInput.name, file);
+                        }
+                    }
                 }
 
                 const uploadDocsRes = await fetch(`/api/users/${uid}/documents`, {
